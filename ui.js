@@ -19,12 +19,11 @@ export const translations = {
         contactButton: "Contato",
         portfolioTitle: "Projetos",
         p1Title: "BTG Pactual",
-        p1Desc: "Atuei como Front End, desenvolvendo aplicações com tecnologias como Micro Front Ends (MFE) para separação do portal em micro portais permitindo utilização de React, Vue, Angular, etc. Seguindo o Atomic Design, utilizamos React para componentização de recursos em tela permitindo o reuso dos mesmos. Para garantir a qualidade de software de nossas portais desenvolvemos testes E2E, testes de unidade e de integração utilizando cypress e Typescript para teste estático. No contexto MFE's tinhamos um módulo utils para centralizar nossos componentes que seriam reutilizados em todas as nossas telas e para facilitar a documentação dos mesmos utilizando a ferramenta Storybook.",
+        p1Desc: "O BTG Pactual é um banco de investimentos brasileiro, fundado em 1983, com foco em serviços financeiros para empresas, investidores e clientes de alta renda. Nesse contexto, atuei como Front End, desenvolvendo aplicações com tecnologias como Micro Front Ends (MFE) para separação do portal em micro portais permitindo utilização de React, Vue, Angular, etc. Seguindo o Atomic Design, utilizamos React para componentização de recursos em tela permitindo o reuso dos mesmos. Para garantir a qualidade de software de nossas portais desenvolvemos testes E2E, testes de unidade e de integração utilizando cypress e Typescript para teste estático. No contexto MFE's tinhamos um módulo utils para centralizar nossos componentes que seriam reutilizados em todas as nossas telas e para facilitar a documentação dos mesmos utilizando a ferramenta Storybook.",
         p2Title: "Phoebus Tecnologia",
-        p2Desc: "Atuei como engenheiro de software, com expertize em back-end, desenvolvendo servidores com Javascript(NodeJS) como linguagem principal. Nossos serviços rodavam em AWS Lambda visando redução nos custos. Para essa orquestração utilizamos o framework Serverless para nos auxiliar no build do projeto para ambientes de testes e produção. Para garantir qualidade, utilizamos JEST para testes de unidade e integração e Typescript para teste estático. Para rastreabilidade de nossos serviços implementamos, com o auxílio da biblioteca opentelemetry, a telemetria de nossos endpoints, proporcionando maior observabilidade. Utilizamos alguns recursos da AWS como KAFKA, Event Bridge, S3 e EC2 pra outros fins em nossos projetos , por exemplo, agents e consumers.",
-        p3Title: "Data Analysis Dashboard",
-        p3Desc: "A data analysis dashboard with interactive charts, designed for clarity and visual appeal.",
-        p4Title: "Packaging Design",
+        p2Desc: "Phoebus Tecnologia (ou Phoebus Tecnologia LTDA) é uma empresa brasileira de tecnologia com foco em pagamentos desenvolvendo soluções tanto para o varejo físico quanto digital, com ênfase em terminais POS e plataformas de captura/ processamento de transações. Nesse cenário, atuei como engenheiro de software, com expertize em back-end, desenvolvendo servidores com Javascript(NodeJS) como linguagem principal. Nossos serviços rodavam em AWS Lambda visando redução nos custos. Para essa orquestração utilizamos o framework Serverless para nos auxiliar no build do projeto para ambientes de testes e produção. Para garantir qualidade, utilizamos JEST para testes de unidade e integração e Typescript para teste estático. Persistimos nossos dados utilizando um banco NoSQL - MongoDB.  Para rastreabilidade de nossos serviços implementamos, com o auxílio da biblioteca opentelemetry, a telemetria de nossos endpoints, proporcionando maior observabilidade. Utilizamos alguns recursos da AWS como KAFKA, Event Bridge, S3 e EC2 pra outros fins em nossos projetos , por exemplo, agents e consumers.",
+        p3Title: "API Community Center",
+        p3Desc: "Este é o backend da aplicação Centros Comunitários - Uma solução para facilitar a comunicação entre centro comunitários que estejam disponíveis para abrigar pessoas em situações de calamidade, bem como, o intercâmbio de recursos visando atender as necessidades das pessoas que se encontram abrigadas. Foi densevolvido com Javascript(NodeJS) como linguagem. Para orquestar nossos serviços utilizamos o Express criando rotas, middlewares, serviços, etc. Para armazenamento de dados utilizamos o MongoDB. Para qualidade de software foi utilizado o JEST, implementando testes de integração de de unidade nos componentes.",
         p4Desc: "Luxury packaging design for a specialty coffee brand, blending elegance with Arabic heritage.",
         p5Title: "Social Media Designs",
         p5Desc: "A collection of social media designs for a fashion brand, aimed at increasing engagement.",
@@ -171,7 +170,7 @@ export function applyLanguage(lang) {
         const key = el.getAttribute('data-key');
         if (translations[lang] && translations[lang][key]) {
             if (key === 'themeSwitcherLabel') el.setAttribute('aria-label', translations[lang][key]);
-            else el.textContent = translations[lang][key];
+            else el.innerHTML = translations[lang][key];
         }
     });
 
