@@ -15,13 +15,13 @@ export const translations = {
         navAchievements: "Conquistas",
         heroTitle: "Fullstack Developer",
         heroSubtitle: "Ideias são inspirações que se trasportam do abstrato para o material através de minhas mãos.",
-        heroButton: "Veja meus trabalhos",
+        heroButton: "Projetos",
         contactButton: "Contato",
-        portfolioTitle: "My Work",
-        p1Title: "Brand Identity Design",
-        p1Desc: "A complete brand identity for a tech startup, focusing on simplicity and professionalism.",
-        p2Title: "UI/UX App Design",
-        p2Desc: "UI/UX design for a music app focused on usability and a sleek dark theme aesthetic.",
+        portfolioTitle: "Projetos",
+        p1Title: "BTG Pactual",
+        p1Desc: "Atuei como Front End, desenvolvendo aplicações com tecnologias como Micro Front Ends (MFE) para separação do portal em micro portais permitindo utilização de React, Vue, Angular, etc. Seguindo o Atomic Design, utilizamos React para componentização de recursos em tela permitindo o reuso dos mesmos. Para garantir a qualidade de software de nossas portais desenvolvemos testes E2E, testes de unidade e de integração utilizando cypress e Typescript para teste estático. No contexto MFE's tinhamos um módulo utils para centralizar nossos componentes que seriam reutilizados em todas as nossas telas e para facilitar a documentação dos mesmos utilizando a ferramenta Storybook.",
+        p2Title: "Phoebus Tecnologia",
+        p2Desc: "Atuei como engenheiro de software, com expertize em back-end, desenvolvendo servidores com Javascript(NodeJS) como linguagem principal. Nossos serviços rodavam em AWS Lambda visando redução nos custos. Para essa orquestração utilizamos o framework Serverless para nos auxiliar no build do projeto para ambientes de testes e produção. Para garantir qualidade, utilizamos JEST para testes de unidade e integração e Typescript para teste estático. Para rastreabilidade de nossos serviços implementamos, com o auxílio da biblioteca opentelemetry, a telemetria de nossos endpoints, proporcionando maior observabilidade. Utilizamos alguns recursos da AWS como KAFKA, Event Bridge, S3 e EC2 pra outros fins em nossos projetos , por exemplo, agents e consumers.",
         p3Title: "Data Analysis Dashboard",
         p3Desc: "A data analysis dashboard with interactive charts, designed for clarity and visual appeal.",
         p4Title: "Packaging Design",
@@ -73,8 +73,8 @@ export const translations = {
         heroSubtitle: "Have a new project? I'd love to hear about it. You can reach me via email or follow me on social media.",
         heroButton: "View My Work",
         contactButton: "Contact Me",
-        portfolioTitle: "أعمالي",
-        p1Title: "تصميم هوية بصرية",
+        portfolioTitle: "My Work",
+        p1Title: "BTG Pactual",
         p1Desc: "تصميم هوية بصرية متكاملة لشركة ناشئة في قطاع التكنولوجيا، تركز على البساطة والاحترافية.",
         p2Title: "تصميم واجهات تطبيقات",
         p2Desc: "تصميم واجهة وتجربة مستخدم لتطبيق موسيقى يركز على سهولة الاستخدام وجمالية التصميم الداكن.",
@@ -137,7 +137,7 @@ export function setInitialThemeAndLang() {
     setTheme(currentTheme);
 
     const langSwitcher = document.getElementById('lang-switcher');
-    let currentLang = localStorage.getItem('lang') || 'ar';
+    let currentLang = localStorage.getItem('lang') || 'en';
     langSwitcher.addEventListener('click', () => {
         currentLang = currentLang === 'ar' ? 'en' : 'ar';
         applyLanguage(currentLang);
@@ -165,6 +165,7 @@ export function applyLanguage(lang) {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.body.classList.toggle('lang-en', lang === 'en');
+    localStorage.setItem('lang', lang);
 
     document.querySelectorAll('[data-key]').forEach(el => {
         const key = el.getAttribute('data-key');
