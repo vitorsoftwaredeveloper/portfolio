@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="محفظة أعمال عادل سوان — مصمم جرافيك ومطور واجهات. اعرض المشاريع، الخدمات وطرق التواصل.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="media/profile-photo.png">
+    <!-- Open Graph -->
+    <meta property="og:title" content="عادل سوان | مصمم جرافيك">
+    <meta property="og:description" content="محفظة أعمال عادل سوان — مصمم جرافيك ومطور واجهات. اعرض المشاريع، الخدمات وطرق التواصل.">
+    <meta property="og:image" content="media/profile-photo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_AR">
+    <meta name="twitter:card" content="summary_large_image">
     <title>عادل سوان | مصمم جرافيك</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -155,13 +165,6 @@
                 <h2 data-key="contactTitle">اتصل بي</h2>
                 <p data-key="contactParagraph">هل لديك مشروع جديد؟ أحب أن أسمع عنه. يمكنك التواصل معي عبر البريد الإلكتروني أو متابعتي على وسائل التواصل الاجتماعي.</p>
                 <a href="mailto:vitorsoftwaredeveloper@gmail.com" class="email-link">vitorsoftwaredeveloper@gmail.com</a>
-
-                <div class="file-upload">
-                    <input id="file-input" type="file" multiple hidden>
-                    <button id="file-btn" class="btn btn-secondary" type="button">إضافة ملفات</button>
-                    <button id="clear-files" class="btn" type="button" style="display:none;margin-right:0.5rem;">مسح الملفات</button>
-                    <div id="file-list" class="file-list" aria-live="polite"></div>
-                </div>
             </div>
         </section>
     </main>
@@ -187,24 +190,6 @@
             <h3 id="modal-title"></h3>
             <p id="modal-description"></p>
             <!-- <a data-key-title="p3Title" data-key-desc="p3Desc" href="https://github.com/vitorsoftwaredeveloper/API_community_center" target="_blank">repo</a> -->
-        </div>
-    </div>
-
-    <div id="login-modal" class="modal login-modal" aria-hidden="true">
-        <div class="modal-content">
-            <span class="close-login-button close-button">&times;</span>
-            <h3 id="login-title">تسجيل الدخول</h3>
-            <form id="login-form" novalidate>
-                <label for="login-email">البريد الإلكتروني</label>
-                <input id="login-email" name="email" type="email" required>
-                <label for="login-password">كلمة المرور</label>
-                <input id="login-password" name="password" type="password" required minlength="6">
-                <div style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center;">
-                    <button type="submit" class="btn">دخول</button>
-                    <button type="button" id="login-cancel" class="btn btn-secondary">إلغاء</button>
-                </div>
-                <p id="login-error" style="color:var(--primary-color);margin-top:0.75rem;display:none;"></p>
-            </form>
         </div>
     </div>
 

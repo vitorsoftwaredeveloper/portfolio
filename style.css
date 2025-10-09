@@ -26,6 +26,12 @@ body.light-mode {
     padding: 0;
 }
 
+/* Accessible focus outlines for keyboard users */
+:focus-visible {
+    outline: 3px solid rgba(0,170,255,0.28);
+    outline-offset: 2px;
+}
+
 html {
     scroll-behavior: smooth;
 }
