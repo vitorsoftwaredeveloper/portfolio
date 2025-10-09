@@ -10,7 +10,7 @@ export const translations = {
         logo: "Vitor Soares",
         navHome: "Inicio",
         navPortfolio: "Portfolio",
-        navAbout: "Sobre",
+        navAbout: "Sobre mim",
         navContact: "Contato",
         navAchievements: "Conquistas",
         heroTitle: "Fullstack Developer",
@@ -24,7 +24,8 @@ export const translations = {
         p2Desc: "Phoebus Tecnologia (ou Phoebus Tecnologia LTDA) é uma empresa brasileira de tecnologia com foco em pagamentos desenvolvendo soluções tanto para o varejo físico quanto digital, com ênfase em terminais POS e plataformas de captura/ processamento de transações. Nesse cenário, atuei como engenheiro de software, com expertize em back-end, desenvolvendo servidores com Javascript(NodeJS) como linguagem principal. Nossos serviços rodavam em AWS Lambda visando redução nos custos. Para essa orquestração utilizamos o framework Serverless para nos auxiliar no build do projeto para ambientes de testes e produção. Para garantir qualidade, utilizamos JEST para testes de unidade e integração e Typescript para teste estático. Persistimos nossos dados utilizando um banco NoSQL - MongoDB.  Para rastreabilidade de nossos serviços implementamos, com o auxílio da biblioteca opentelemetry, a telemetria de nossos endpoints, proporcionando maior observabilidade. Utilizamos alguns recursos da AWS como KAFKA, Event Bridge, S3 e EC2 pra outros fins em nossos projetos , por exemplo, agents e consumers.",
         p3Title: "API Community Center",
         p3Desc: "Este é o backend da aplicação Centros Comunitários - Uma solução para facilitar a comunicação entre centro comunitários que estejam disponíveis para abrigar pessoas em situações de calamidade, bem como, o intercâmbio de recursos visando atender as necessidades das pessoas que se encontram abrigadas. Foi densevolvido com Javascript(NodeJS) como linguagem. Para orquestar nossos serviços utilizamos o Express criando rotas, middlewares, serviços, etc. Para armazenamento de dados utilizamos o MongoDB. Para qualidade de software foi utilizado o JEST, implementando testes de integração de de unidade nos componentes.",
-        p4Desc: "Luxury packaging design for a specialty coffee brand, blending elegance with Arabic heritage.",
+        p4Title: "Aquarela Serverless",
+        p4Desc: "Essa foi uma aplicação desenvolvida com foco em serverless, utilizando AWS Lambda e outras ferramentas da AWS para garantir escalabilidade e eficiência. O backend foi construído com Node.js, utilizando o framework Serverless para facilitar a implantação e gerenciamento das funções Lambda. A aplicação também faz uso do API Gateway para expor as APIs RESTful, permitindo a comunicação entre o frontend e o backend. Para armazenamento de dados, foi utilizado o MongoDB, um banco de dados NoSQL, que oferece alta performance e escalabilidade. Além disso, foram implementadas práticas de monitoramento e logging utilizando CloudWatch, garantindo a observabilidade das funções Lambda e facilitando a identificação de problemas. A arquitetura serverless adotada nesta aplicação permite uma redução significativa nos custos operacionais, já que os recursos são utilizados apenas quando necessário, além de proporcionar uma maior agilidade no desenvolvimento e implantação de novas funcionalidades.",
         p5Title: "Social Media Designs",
         p5Desc: "A collection of social media designs for a fashion brand, aimed at increasing engagement.",
         p6Title: "Web Design",
@@ -37,15 +38,15 @@ export const translations = {
         p9Desc: "An expanded set of social media and promotional post designs for a fashion brand to boost engagement.",
         p10Title: "Additional UI/UX Showcase",
         p10Desc: "A visual showcase combining mobile app and web interfaces highlighting features and layout coherence.",
-        aboutTitle: "About Me",
-        aboutParagraph: "I'm Adel Swan, a passionate graphic designer with extensive experience in creating captivating visual identities and innovative digital designs. I believe in the power of design to tell stories and solve problems. I always strive to deliver work that combines beauty and function, helping brands grow and shine.",
-        servicesTitle: "My Services",
+        aboutTitle: "Sobre mim",
+        aboutParagraph: "Eu sou Vitor Soares sou casado e tenho uma família linda, minha esposa se chama Morgana e meus filhos Samuel e Clarice são maravilhosos, e esse é o maior bem que eu possa ter. Profissionalmente sou um desenvolvedor fullstack apaixonado por criar soluções digitais inovadoras e eficientes, atuando na área desde 2019, com uma sólida experiência em desenvolvimento web, me especializando em transformar ideias em produtos funcionais que atendem às necessidades dos usuários. Acredito no poder da tecnologia para resolver problemas e melhorar a vida das pessoas, por isso, estou sempre em busca de novos desafios para crescer como profissional, contribuindo para projetos que façam a diferença.",
+        servicesTitle: "Meus serviços",
         service1: "Desenvolvedor Front End",
         service2: "Desenvolvedor Back End",
         service3: "AWS",
         service4: "Automação de teste",
         contactTitle: "Contato",
-        contactParagraph: "Tem um novo projeto? Eu irei curtir ouvir sobre isso. Você pode entrar em contato comigo via email ou me seguir nas mídias sociais.",
+        contactParagraph: "Tem um novo projeto? Me fala sobre ele. Você pode entrar em contato comigo via email ou me seguir nas mídias sociais.",
         achievementsTitle: "Achievements",
         achv1Title: "Best Brand Identity Award",
         achv1Desc: "Winner of the annual design award for a brand identity project for a tech startup.",
@@ -135,13 +136,13 @@ export function setInitialThemeAndLang() {
     });
     setTheme(currentTheme);
 
-    const langSwitcher = document.getElementById('lang-switcher');
-    let currentLang = localStorage.getItem('lang') || 'en';
-    langSwitcher.addEventListener('click', () => {
-        currentLang = currentLang === 'ar' ? 'en' : 'ar';
-        applyLanguage(currentLang);
-    });
-    applyLanguage(currentLang);
+    // const langSwitcher = document.getElementById('lang-switcher');
+    // let currentLang = localStorage.getItem('lang') || 'en';
+    // langSwitcher.addEventListener('click', () => {
+    //     currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    //     applyLanguage(currentLang);
+    // });
+    applyLanguage('en');
 }
 
 export function initUI() {
