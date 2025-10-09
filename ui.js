@@ -1,31 +1,31 @@
 // UI-related helpers: theme, language, small DOM utilities and translation wiring
 export const translations = {
     en: {
-        pageTitle: "Adel Swan | Graphic Designer",
+        pageTitle: "Vitor Soares | Fullstack Developer",
         themeSwitcherLabel: "Toggle theme",
         addFiles: "Add Files",
         clearFiles: "Clear Files",
         addWork: "Add Work",
         login: "Login",
-        logo: "Adel Swan",
-        navHome: "Home",
+        logo: "Vitor Soares",
+        navHome: "Inicio",
         navPortfolio: "Portfolio",
-        navAbout: "About",
-        navContact: "Contact",
-        navAchievements: "Achievements",
-        heroTitle: "Creative Graphic Designer & Entrepreneur",
-        heroSubtitle: "Transforming ideas into unforgettable visual experiences.",
-        heroButton: "View My Work",
-        contactButton: "Contact Me",
-        portfolioTitle: "My Work",
-        p1Title: "Brand Identity Design",
-        p1Desc: "A complete brand identity for a tech startup, focusing on simplicity and professionalism.",
-        p2Title: "UI/UX App Design",
-        p2Desc: "UI/UX design for a music app focused on usability and a sleek dark theme aesthetic.",
-        p3Title: "Data Analysis Dashboard",
-        p3Desc: "A data analysis dashboard with interactive charts, designed for clarity and visual appeal.",
-        p4Title: "Packaging Design",
-        p4Desc: "Luxury packaging design for a specialty coffee brand, blending elegance with Arabic heritage.",
+        navAbout: "Sobre mim",
+        navContact: "Contato",
+        navAchievements: "Conquistas",
+        heroTitle: "Fullstack Developer",
+        heroSubtitle: "Ideias são inspirações que se trasportam do abstrato para o material através de minhas mãos.",
+        heroButton: "Projetos",
+        contactButton: "Contato",
+        portfolioTitle: "Projetos",
+        p1Title: "BTG Pactual",
+        p1Desc: "O BTG Pactual é um banco de investimentos brasileiro, fundado em 1983, com foco em serviços financeiros para empresas, investidores e clientes de alta renda. Nesse contexto, atuei como Front End, desenvolvendo aplicações com tecnologias como Micro Front Ends (MFE) para separação do portal em micro portais permitindo utilização de React, Vue, Angular, etc. Seguindo o Atomic Design, utilizamos React para componentização de recursos em tela permitindo o reuso dos mesmos. Para garantir a qualidade de software de nossas portais desenvolvemos testes E2E, testes de unidade e de integração utilizando cypress e Typescript para teste estático. No contexto MFE's tinhamos um módulo utils para centralizar nossos componentes que seriam reutilizados em todas as nossas telas e para facilitar a documentação dos mesmos utilizando a ferramenta Storybook.",
+        p2Title: "Phoebus Tecnologia",
+        p2Desc: "Phoebus Tecnologia (ou Phoebus Tecnologia LTDA) é uma empresa brasileira de tecnologia com foco em pagamentos desenvolvendo soluções tanto para o varejo físico quanto digital, com ênfase em terminais POS e plataformas de captura/ processamento de transações. Nesse cenário, atuei como engenheiro de software, com expertize em back-end, desenvolvendo servidores com Javascript(NodeJS) como linguagem principal. Nossos serviços rodavam em AWS Lambda visando redução nos custos. Para essa orquestração utilizamos o framework Serverless para nos auxiliar no build do projeto para ambientes de testes e produção. Para garantir qualidade, utilizamos JEST para testes de unidade e integração e Typescript para teste estático. Persistimos nossos dados utilizando um banco NoSQL - MongoDB.  Para rastreabilidade de nossos serviços implementamos, com o auxílio da biblioteca opentelemetry, a telemetria de nossos endpoints, proporcionando maior observabilidade. Utilizamos alguns recursos da AWS como KAFKA, Event Bridge, S3 e EC2 pra outros fins em nossos projetos , por exemplo, agents e consumers.",
+        p3Title: "API Community Center",
+        p3Desc: "Este é o backend da aplicação Centros Comunitários - Uma solução para facilitar a comunicação entre centro comunitários que estejam disponíveis para abrigar pessoas em situações de calamidade, bem como, o intercâmbio de recursos visando atender as necessidades das pessoas que se encontram abrigadas. Foi densevolvido com Javascript(NodeJS) como linguagem. Para orquestar nossos serviços utilizamos o Express criando rotas, middlewares, serviços, etc. Para armazenamento de dados utilizamos o MongoDB. Para qualidade de software foi utilizado o JEST, implementando testes de integração de de unidade nos componentes.",
+        p4Title: "Aquarela Serverless",
+        p4Desc: "Essa foi uma aplicação desenvolvida com foco em serverless, utilizando AWS Lambda e outras ferramentas da AWS para garantir escalabilidade e eficiência. O backend foi construído com Node.js, utilizando o framework Serverless para facilitar a implantação e gerenciamento das funções Lambda. A aplicação também faz uso do API Gateway para expor as APIs RESTful, permitindo a comunicação entre o frontend e o backend. Para armazenamento de dados, foi utilizado o MongoDB, um banco de dados NoSQL, que oferece alta performance e escalabilidade. Além disso, foram implementadas práticas de monitoramento e logging utilizando CloudWatch, garantindo a observabilidade das funções Lambda e facilitando a identificação de problemas. A arquitetura serverless adotada nesta aplicação permite uma redução significativa nos custos operacionais, já que os recursos são utilizados apenas quando necessário, além de proporcionar uma maior agilidade no desenvolvimento e implantação de novas funcionalidades.",
         p5Title: "Social Media Designs",
         p5Desc: "A collection of social media designs for a fashion brand, aimed at increasing engagement.",
         p6Title: "Web Design",
@@ -38,15 +38,15 @@ export const translations = {
         p9Desc: "An expanded set of social media and promotional post designs for a fashion brand to boost engagement.",
         p10Title: "Additional UI/UX Showcase",
         p10Desc: "A visual showcase combining mobile app and web interfaces highlighting features and layout coherence.",
-        aboutTitle: "About Me",
-        aboutParagraph: "I'm Adel Swan, a passionate graphic designer with extensive experience in creating captivating visual identities and innovative digital designs. I believe in the power of design to tell stories and solve problems. I always strive to deliver work that combines beauty and function, helping brands grow and shine.",
-        servicesTitle: "My Services",
-        service1: "Brand Identity Design",
-        service2: "App UI/UX Design",
-        service3: "Web Design",
-        service4: "Social Media Design",
-        contactTitle: "Contact Me",
-        contactParagraph: "Have a new project? I'd love to hear about it. You can reach me via email or follow me on social media.",
+        aboutTitle: "Sobre mim",
+        aboutParagraph: "Eu sou Vitor Soares sou casado e tenho uma família linda, minha esposa se chama Morgana e meus filhos Samuel e Clarice são maravilhosos, e esse é o maior bem que eu possa ter. Profissionalmente sou um desenvolvedor fullstack apaixonado por criar soluções digitais inovadoras e eficientes, atuando na área desde 2019, com uma sólida experiência em desenvolvimento web, me especializando em transformar ideias em produtos funcionais que atendem às necessidades dos usuários. Acredito no poder da tecnologia para resolver problemas e melhorar a vida das pessoas, por isso, estou sempre em busca de novos desafios para crescer como profissional, contribuindo para projetos que façam a diferença.",
+        servicesTitle: "Meus serviços",
+        service1: "Desenvolvedor Front End",
+        service2: "Desenvolvedor Back End",
+        service3: "AWS",
+        service4: "Automação de teste",
+        contactTitle: "Contato",
+        contactParagraph: "Tem um novo projeto? Me fala sobre ele. Você pode entrar em contato comigo via email ou me seguir nas mídias sociais.",
         achievementsTitle: "Achievements",
         achv1Title: "Best Brand Identity Award",
         achv1Desc: "Winner of the annual design award for a brand identity project for a tech startup.",
@@ -54,7 +54,7 @@ export const translations = {
         achv2Desc: "Collaborative projects with design agencies across Europe and the Middle East.",
         achv3Title: "Conference Speaker",
         achv3Desc: "Presented on design innovation at a regional conference.",
-        footerRights: " 2024 Adel Swan. All rights reserved."
+        footerRights: " 2024 Vitor Soares. Todos os direitos reservados."
     },
     ar: {
         pageTitle: "عادل سوان | مصمم جرافيك",
@@ -70,11 +70,11 @@ export const translations = {
         navContact: "اتصل بي",
         navAchievements: "إنجازاتي",
         heroTitle: "مصمم جرافيك ورائد أعمال إبداعي",
-        heroSubtitle: "أحول الأفكار إلى تجارب بصرية لا تُنسى.",
-        heroButton: "شاهد أعمالي",
-        contactButton: "اتصل بي",
-        portfolioTitle: "أعمالي",
-        p1Title: "تصميم هوية بصرية",
+        heroSubtitle: "Have a new project? I'd love to hear about it. You can reach me via email or follow me on social media.",
+        heroButton: "View My Work",
+        contactButton: "Contact Me",
+        portfolioTitle: "My Work",
+        p1Title: "BTG Pactual",
         p1Desc: "تصميم هوية بصرية متكاملة لشركة ناشئة في قطاع التكنولوجيا، تركز على البساطة والاحترافية.",
         p2Title: "تصميم واجهات تطبيقات",
         p2Desc: "تصميم واجهة وتجربة مستخدم لتطبيق موسيقى يركز على سهولة الاستخدام وجمالية التصميم الداكن.",
@@ -101,7 +101,7 @@ export const translations = {
         service2: "تصميم واجهات التطبيقات",
         service3: "تصميم مواقع الويب",
         service4: "تصميمات السوشيال ميديا",
-        contactTitle: "اتصل بي",
+        contactTitle: "Contact Me",
         contactParagraph: "هل لديك مشروع جديد؟ أحب أن أسمع عنه. يمكنك التواصل معي عبر البريد الإلكتروني أو متابعتي على وسائل التواصل الاجتماعي.",
         achievementsTitle: "إنجازاتي",
         achv1Title: "جائزة أفضل هوية بصرية",
@@ -136,13 +136,13 @@ export function setInitialThemeAndLang() {
     });
     setTheme(currentTheme);
 
-    const langSwitcher = document.getElementById('lang-switcher');
-    let currentLang = localStorage.getItem('lang') || 'ar';
-    langSwitcher.addEventListener('click', () => {
-        currentLang = currentLang === 'ar' ? 'en' : 'ar';
-        applyLanguage(currentLang);
-    });
-    applyLanguage(currentLang);
+    // const langSwitcher = document.getElementById('lang-switcher');
+    // let currentLang = localStorage.getItem('lang') || 'en';
+    // langSwitcher.addEventListener('click', () => {
+    //     currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    //     applyLanguage(currentLang);
+    // });
+    applyLanguage('en');
 }
 
 export function initUI() {
@@ -165,12 +165,13 @@ export function applyLanguage(lang) {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.body.classList.toggle('lang-en', lang === 'en');
+    localStorage.setItem('lang', lang);
 
     document.querySelectorAll('[data-key]').forEach(el => {
         const key = el.getAttribute('data-key');
         if (translations[lang] && translations[lang][key]) {
             if (key === 'themeSwitcherLabel') el.setAttribute('aria-label', translations[lang][key]);
-            else el.textContent = translations[lang][key];
+            else el.innerHTML = translations[lang][key];
         }
     });
 

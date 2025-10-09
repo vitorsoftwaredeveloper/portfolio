@@ -26,6 +26,12 @@ body.light-mode {
     padding: 0;
 }
 
+/* Accessible focus outlines for keyboard users */
+:focus-visible {
+    outline: 3px solid rgba(0,170,255,0.28);
+    outline-offset: 2px;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -443,6 +449,7 @@ body.lang-en .hero-content p {
     transform-style: preserve-3d;
     transition: transform 0.25s ease;
     will-change: transform;
+    height: 100%;
 }
 
 .portfolio-item:hover {
