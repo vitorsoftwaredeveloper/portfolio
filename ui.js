@@ -40,12 +40,12 @@ export const translations = {
         aboutTitle: "About Me",
         aboutParagraph: "I'm Adel Swan, a passionate graphic designer with extensive experience in creating captivating visual identities and innovative digital designs. I believe in the power of design to tell stories and solve problems. I always strive to deliver work that combines beauty and function, helping brands grow and shine.",
         servicesTitle: "My Services",
-        service1: "Brand Identity Design",
-        service2: "App UI/UX Design",
-        service3: "Web Design",
-        service4: "Social Media Design",
+        service1: "Desenvolvedor Front End",
+        service2: "Desenvolvedor Back End",
+        service3: "AWS",
+        service4: "Automação de teste",
         contactTitle: "Contato",
-        contactParagraph: "Tem um novo projeto? Eu irei amar ouvir sobre isso. Você pode entrar em contato comigo via email ou me seguir nas mídias sociais.",
+        contactParagraph: "Tem um novo projeto? Eu irei curtir ouvir sobre isso. Você pode entrar em contato comigo via email ou me seguir nas mídias sociais.",
         achievementsTitle: "Achievements",
         achv1Title: "Best Brand Identity Award",
         achv1Desc: "Winner of the annual design award for a brand identity project for a tech startup.",
@@ -53,7 +53,7 @@ export const translations = {
         achv2Desc: "Collaborative projects with design agencies across Europe and the Middle East.",
         achv3Title: "Conference Speaker",
         achv3Desc: "Presented on design innovation at a regional conference.",
-        footerRights: " 2024 Adel Swan. All rights reserved."
+        footerRights: " 2024 Vitor Soares. Todos os direitos reservados."
     },
     ar: {
         pageTitle: "عادل سوان | مصمم جرافيك",
