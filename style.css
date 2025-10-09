@@ -843,6 +843,7 @@ footer {
     .hero-text {
         text-align: center;
     }
+
     body.lang-en .hero-text {
         text-align: center;
         animation-name: fadeIn;
@@ -851,8 +852,10 @@ footer {
         margin: 0 auto 2rem auto;
         text-align: center;
     }
+
+
     body.lang-en .hero-content p {
-        text-align: left;
+        text-align: center;
     }
 
     .about-content {
@@ -861,7 +864,11 @@ footer {
     }
 
     .nav-links {
-        display: none; /* Simplification for this example. A real project would use a hamburger menu. */
+        display: none; 
+    }
+
+    body.lang-en .hero-buttons {
+        justify-content: center;
     }
 }
 
