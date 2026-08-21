@@ -671,6 +671,85 @@ ul {
     height: 14px;
 }
 
+.repo-meta .repo-lang,
+.repo-meta .repo-stat,
+.repo-meta .repo-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: var(--radius-tag);
+    background: color-mix(in oklab, var(--muted) 65%, transparent);
+}
+
+.repo-lang i {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--dot, var(--primary));
+}
+
+.repo-stat .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.repo-meta .repo-updated {
+    background: transparent;
+    padding-inline: 0;
+    color: color-mix(in oklab, var(--muted-fg) 80%, transparent);
+}
+
+.bento-card .repo-meta {
+    margin-top: 14px;
+}
+
+.lang-bar {
+    margin-top: 26px;
+}
+
+.lang-track {
+    display: flex;
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--muted);
+}
+
+.lang-slice {
+    width: var(--slice, 0%);
+    min-width: 2px;
+    background: var(--dot, var(--primary));
+}
+
+.lang-legend {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted-fg);
+}
+
+.lang-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.lang-legend i {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--dot, var(--primary));
+}
+
+.lang-legend span {
+    color: color-mix(in oklab, var(--muted-fg) 70%, transparent);
+}
+
 .repo-card.skeleton {
     min-height: 178px;
     border-style: dashed;
@@ -959,10 +1038,18 @@ ul {
     height: 16px;
 }
 
+.gh-synced {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: var(--muted-fg);
+}
+
 .gh-live {
     width: 8px;
     height: 8px;
-    margin-left: auto;
     border-radius: 999px;
     background: var(--primary);
     opacity: 0;
@@ -1104,9 +1191,9 @@ ul {
 
 @media (min-width: 640px) {
     .stats {
-        grid-template-columns: repeat(3, auto);
+        grid-template-columns: repeat(2, auto);
         justify-content: start;
-        gap: 64px;
+        gap: 32px 64px;
     }
 
     .channels {
@@ -1167,6 +1254,10 @@ ul {
 }
 
 @media (min-width: 1024px) {
+    .stats {
+        grid-template-columns: repeat(4, auto);
+    }
+
     .hero {
         padding-top: 80px;
         padding-bottom: 88px;

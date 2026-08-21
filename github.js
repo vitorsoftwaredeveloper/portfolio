@@ -1,100 +1,59 @@
-const USER = 'vitorsoftwaredeveloper';
-const CACHE_KEY = 'gh-activity-v1';
-const CACHE_TTL = 30 * 60 * 1000;
+import { USER, loadGithubData, getCachedGithubData } from './gh-api.js';
+import { formatNumber, formatDateTime, formatTime, sameDay, sameMonth } from './format.js';
 
-const numberFormat = new Intl.NumberFormat('pt-BR');
-const dateFormat = new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-});
-
-const sameDay = (a, b) =>
-    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-
-const sameMonth = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
-
-async function getJson(url) {
-    const response = await fetch(url, { headers: { Accept: 'application/vnd.github+json' } });
-    if (!response.ok) throw new Error(`GitHub respondeu ${response.status}`);
-    return response.json();
-}
-
-async function loadActivity() {
-    const events = await getJson(`https://api.github.com/users/${USER}/events/public?per_page=100`);
-    const pushes = events.filter((event) => event.type === 'PushEvent');
+function summarize(data) {
+    const pushes = data.pushes || [];
     const now = new Date();
 
-    const activity = {
+    const summary = {
         total: pushes.length,
-        month: pushes.filter((event) => sameMonth(new Date(event.created_at), now)).length,
-        today: pushes.filter((event) => sameDay(new Date(event.created_at), now)).length,
+        month: pushes.filter((push) => sameMonth(new Date(push.createdAt), now)).length,
+        today: pushes.filter((push) => sameDay(new Date(push.createdAt), now)).length,
         commit: null
     };
 
     const latest = pushes[0];
-    if (latest && latest.payload && latest.payload.head) {
-        try {
-            const data = await getJson(`https://api.github.com/repos/${latest.repo.name}/commits/${latest.payload.head}`);
-            activity.commit = {
-                message: data.commit.message.split('\n')[0],
-                repo: latest.repo.name,
-                sha: data.sha.slice(0, 7),
-                url: data.html_url,
-                date: data.commit.author.date
-            };
-        } catch (error) {
-            activity.commit = null;
-        }
+    if (latest) {
+        summary.commit = {
+            message: latest.message || `${latest.commits} commit(s) enviados`,
+            repo: latest.repo,
+            url: latest.head ? `https://github.com/${latest.repo}/commit/${latest.head}` : `https://github.com/${latest.repo}`,
+            sha: latest.head ? latest.head.slice(0, 7) : '',
+            date: latest.createdAt
+        };
     }
 
-    return activity;
+    return summary;
 }
 
-function readCache() {
-    try {
-        const raw = localStorage.getItem(CACHE_KEY);
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        if (Date.now() - parsed.savedAt > CACHE_TTL) return null;
-        return parsed.activity;
-    } catch (error) {
-        return null;
-    }
-}
-
-function writeCache(activity) {
-    try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), activity }));
-    } catch (error) {
-        return;
-    }
-}
-
-function render(root, activity) {
+function render(root, data) {
+    const summary = summarize(data);
     const set = (key, value) => {
         const node = root.querySelector(`[data-gh="${key}"]`);
         if (node) node.textContent = value;
     };
 
-    set('total', numberFormat.format(activity.total));
-    set('month', numberFormat.format(activity.month));
-    set('today', numberFormat.format(activity.today));
+    set('total', formatNumber(summary.total));
+    set('month', formatNumber(summary.month));
+    set('today', formatNumber(summary.today));
 
     const link = root.querySelector('[data-gh="commit-link"]');
-    if (activity.commit) {
-        set('message', activity.commit.message);
-        set(
-            'meta',
-            `${activity.commit.repo} · ${activity.commit.sha} · ${dateFormat.format(new Date(activity.commit.date))}`
-        );
-        if (link) link.href = activity.commit.url;
+    if (summary.commit) {
+        const parts = [summary.commit.repo, summary.commit.sha, formatDateTime(summary.commit.date)].filter(Boolean);
+        set('message', summary.commit.message);
+        set('meta', parts.join(' · '));
+        if (link) link.href = summary.commit.url;
     } else {
         set('message', 'Nenhum push público na janela recente.');
         set('meta', '');
         if (link) link.href = `https://github.com/${USER}`;
+    }
+
+    const stamp = root.querySelector('[data-gh="synced"]');
+    if (stamp) {
+        stamp.textContent = data.stale
+            ? `dados em cache de ${formatTime(data.fetchedAt)}`
+            : `sincronizado às ${formatTime(data.fetchedAt || Date.now())}`;
     }
 
     root.dataset.state = 'ready';
@@ -103,17 +62,14 @@ function render(root, activity) {
 export async function initGithubActivity(root) {
     if (!root) return;
 
-    const cached = readCache();
-    if (cached) {
-        render(root, cached);
+    const cached = getCachedGithubData();
+    if (cached) render(root, { ...cached, stale: true });
+
+    const data = await loadGithubData();
+    if (!data) {
+        if (!cached) root.dataset.state = 'error';
         return;
     }
 
-    try {
-        const activity = await loadActivity();
-        writeCache(activity);
-        render(root, activity);
-    } catch (error) {
-        root.dataset.state = 'error';
-    }
+    render(root, data);
 }
