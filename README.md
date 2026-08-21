@@ -1,0 +1,77 @@
+# portfolio
+
+Portfólio de Vitor Soares. HTML, CSS e JavaScript puros, sem framework e sem etapa de build.
+Publicado no GitHub Pages.
+
+A cada visita a página busca dados públicos do GitHub e se remonta com eles: lista de
+repositórios, estrelas, forks, linguagens, distribuição de linguagens, números da faixa
+e o último commit público no rodapé. Se a busca falhar, o site cai de volta na lista
+estática de `repos.js` e continua funcionando.
+
+## Rodando localmente
+
+Os arquivos usam módulos ES, então precisam de um servidor HTTP (abrir o `index.html`
+pelo `file://` não funciona):
+
+```bash
+python3 -m http.server 8000
+# http://localhost:8000
+```
+
+## Arquivos
+
+| arquivo | o que faz |
+| --- | --- |
+| `index.html` | marcação da página inteira |
+| `style.css` | estilos, temas claro/escuro e responsividade |
+| `main.js` | monta destaques, grade de repositórios, filtros, números e barra de linguagens |
+| `gh-api.js` | busca os dados do GitHub, com cache local e fallback |
+| `gh-normalize.js` | formato dos dados, compartilhado entre navegador e proxy |
+| `github.js` | bloco de atividade pública no rodapé |
+| `format.js` | número, data relativa e cor por linguagem |
+| `repos.js` | descrições escritas à mão e categorias dos repositórios |
+| `holo.js` | efeito de holograma do hero |
+| `api/github.js` | proxy opcional (ver abaixo) |
+
+As descrições de `repos.js` têm prioridade sobre as do GitHub. Repositórios que não estão
+lá aparecem mesmo assim, usando a descrição do próprio GitHub e uma categoria inferida
+pelos tópicos, homepage ou linguagem.
+
+## Proxy opcional da API
+
+Sem proxy, o navegador de cada visitante fala direto com `api.github.com`. Isso funciona,
+mas a API sem autenticação permite **60 requisições por hora por IP**, e a página gasta 3
+por visita. Um visitante comum nunca chega perto; vários acessos vindos do mesmo IP (rede
+corporativa, um pico de tráfego, F5 repetido) podem estourar o limite. Quando isso
+acontece, o site mostra o cache local ou a lista estática — não quebra, mas fica
+desatualizado.
+
+O proxy resolve isso: uma única função serverless busca tudo com um token e o CDN guarda a
+resposta por 5 minutos, então a API do GitHub é chamada poucas vezes por hora
+independentemente do tráfego. A página passa a fazer **1 requisição em vez de 3**.
+
+### Deploy na Vercel
+
+1. Importe este repositório em [vercel.com/new](https://vercel.com/new). Não há build:
+   escolha o preset "Other" e deixe os comandos em branco.
+2. Em *Settings → Environment Variables*, adicione:
+
+   | variável | obrigatória | valor |
+   | --- | --- | --- |
+   | `GITHUB_TOKEN` | recomendada | um [fine-grained token](https://github.com/settings/personal-access-tokens/new) **sem nenhuma permissão** (só leitura pública). Eleva o limite para 5.000 req/h. |
+   | `GITHUB_USER` | não | usuário a consultar. Padrão: `vitorsoftwaredeveloper`. |
+   | `ALLOWED_ORIGINS` | não | origens liberadas no CORS, separadas por vírgula. Padrão: `*`. |
+
+3. Depois do deploy, confirme que `https://SEU-PROJETO.vercel.app/api/github` devolve JSON.
+4. Aponte a página para o proxy, no `<head>` do `index.html`:
+
+   ```html
+   <meta name="gh-proxy" content="https://SEU-PROJETO.vercel.app/api/github">
+   ```
+
+   Com a meta tag vazia, o proxy é ignorado e o navegador chama a API pública direto.
+   Se o proxy responder erro ou estiver fora do ar, a página cai sozinha para a API
+   pública — o proxy nunca é ponto único de falha.
+
+O token só existe no servidor da Vercel; ele nunca chega ao navegador. A resposta do proxy
+contém apenas dados públicos do GitHub.

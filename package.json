@@ -1,0 +1,6 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Portfolio estatico de Vitor Soares com dados vivos do GitHub."
+}

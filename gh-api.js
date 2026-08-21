@@ -1,7 +1,13 @@
+import { ENDPOINTS, normalizeEvents, normalizeProfile, normalizeRepo } from './gh-normalize.js';
+
 export const USER = 'vitorsoftwaredeveloper';
 
 const CACHE_KEY = 'gh-data-v2';
 const API = 'https://api.github.com';
+
+// Proxy opcional (ver README). Vazio: o navegador fala direto com a API publica.
+const meta = document.querySelector('meta[name="gh-proxy"]');
+const PROXY = meta ? meta.content.trim() : '';
 
 let pending = null;
 
@@ -14,52 +20,6 @@ async function getJson(path) {
         throw error;
     }
     return response.json();
-}
-
-function normalizeRepo(repo) {
-    return {
-        name: repo.name,
-        description: repo.description || '',
-        language: repo.language || '',
-        url: repo.html_url,
-        homepage: repo.homepage || '',
-        stars: repo.stargazers_count || 0,
-        forks: repo.forks_count || 0,
-        fork: Boolean(repo.fork),
-        archived: Boolean(repo.archived),
-        topics: Array.isArray(repo.topics) ? repo.topics : [],
-        pushedAt: repo.pushed_at,
-        createdAt: repo.created_at
-    };
-}
-
-function normalizeProfile(profile) {
-    return {
-        login: profile.login,
-        name: profile.name || profile.login,
-        bio: profile.bio || '',
-        avatar: profile.avatar_url || '',
-        publicRepos: profile.public_repos || 0,
-        followers: profile.followers || 0,
-        following: profile.following || 0,
-        createdAt: profile.created_at,
-        url: profile.html_url
-    };
-}
-
-function normalizeEvents(events) {
-    return events
-        .filter((event) => event.type === 'PushEvent')
-        .map((event) => ({
-            repo: event.repo ? event.repo.name : '',
-            head: event.payload ? event.payload.head : null,
-            commits: event.payload && Array.isArray(event.payload.commits) ? event.payload.commits.length : 0,
-            message:
-                event.payload && Array.isArray(event.payload.commits) && event.payload.commits.length
-                    ? event.payload.commits[event.payload.commits.length - 1].message.split('\n')[0]
-                    : '',
-            createdAt: event.created_at
-        }));
 }
 
 function readCache() {
@@ -82,11 +42,11 @@ function writeCache(data) {
     }
 }
 
-async function request() {
+async function requestFromGithub() {
     const [profile, repos, events] = await Promise.all([
-        getJson(`/users/${USER}`),
-        getJson(`/users/${USER}/repos?per_page=100&sort=pushed&type=owner`),
-        getJson(`/users/${USER}/events/public?per_page=100`).catch(() => [])
+        getJson(ENDPOINTS.profile(USER)),
+        getJson(ENDPOINTS.repos(USER)),
+        getJson(ENDPOINTS.events(USER)).catch(() => [])
     ]);
 
     return {
@@ -94,8 +54,39 @@ async function request() {
         repos: repos.map(normalizeRepo),
         pushes: normalizeEvents(events),
         fetchedAt: Date.now(),
-        fromCache: false
+        fromCache: false,
+        source: 'github'
     };
+}
+
+async function requestFromProxy() {
+    const response = await fetch(PROXY, { headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error(`Proxy respondeu ${response.status}`);
+
+    const payload = await response.json();
+    if (!payload || !payload.profile || !Array.isArray(payload.repos)) {
+        throw new Error('Proxy devolveu um formato inesperado.');
+    }
+
+    return {
+        profile: payload.profile,
+        repos: payload.repos,
+        pushes: Array.isArray(payload.pushes) ? payload.pushes : [],
+        fetchedAt: payload.fetchedAt || Date.now(),
+        fromCache: false,
+        source: 'proxy'
+    };
+}
+
+async function request() {
+    if (!PROXY) return requestFromGithub();
+
+    try {
+        return await requestFromProxy();
+    } catch (error) {
+        // Proxy fora do ar nao pode derrubar a pagina: fala direto com o GitHub.
+        return requestFromGithub();
+    }
 }
 
 /**
