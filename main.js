@@ -731,6 +731,32 @@ function setupFamily() {
     });
 }
 
+function prefersLightScene() {
+    const connection = navigator.connection;
+    if (connection && connection.saveData) return true;
+    return (navigator.hardwareConcurrency || 8) <= 4;
+}
+
+function pauseHeroVideoOffscreen(media, hero) {
+    if (!hero || !('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const attempt = media.play();
+                    if (attempt) attempt.catch(() => {});
+                } else {
+                    media.pause();
+                }
+            });
+        },
+        { threshold: 0 }
+    );
+
+    observer.observe(hero);
+}
+
 function keepHeroVideoPlaying(media) {
     const play = () => {
         const attempt = media.play();
@@ -751,6 +777,131 @@ function keepHeroVideoPlaying(media) {
     document.addEventListener('visibilitychange', retry);
 }
 
+function setupScrollEntry() {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+    if (document.body.dataset.page === 'inicio' && location.hash) {
+        history.replaceState(null, '', location.pathname + location.search);
+    }
+
+    if (document.body.dataset.page === 'inicio' || !location.hash) {
+        scrollTo(0, 0);
+        requestAnimationFrame(() => scrollTo(0, 0));
+    }
+
+    const cue = document.querySelector('.hero-scroll');
+    if (!cue) return;
+
+    cue.addEventListener('click', (event) => {
+        const target = document.querySelector(cue.getAttribute('href'));
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+}
+
+function setupHeaderScroll() {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    const apply = () => {
+        header.dataset.scrolled = String(scrollY > 24);
+    };
+
+    apply();
+    addEventListener('scroll', apply, { passive: true });
+}
+
+function heroVisibleRatio(hero) {
+    const rect = hero.getBoundingClientRect();
+    const viewport = innerHeight || document.documentElement.clientHeight;
+    const span = Math.min(rect.height, viewport);
+    if (span <= 0) return 0;
+    const visible = Math.min(rect.bottom, viewport) - Math.max(rect.top, 0);
+    return Math.min(Math.max(visible / span, 0), 1);
+}
+
+function setupHeroTheme() {
+    const hero = document.querySelector('.hero');
+    const audio = document.getElementById('hero-theme');
+    if (!hero || !audio) return;
+
+    const MAX_VOLUME = 0.22;
+    let target = 0;
+    let ticking = 0;
+    let broken = false;
+
+    audio.volume = 0;
+
+    const play = () => {
+        if (broken) return;
+        const attempt = audio.play();
+        if (attempt) attempt.catch(() => {});
+    };
+
+    const tryLoud = () => {
+        if (broken) return;
+        audio.muted = false;
+        const attempt = audio.play();
+        if (!attempt) return;
+        attempt.catch(() => {
+            audio.muted = true;
+            play();
+        });
+    };
+
+    const unmute = () => {
+        audio.muted = false;
+        if (target > 0) play();
+    };
+
+    const fade = () => {
+        const distance = target - audio.volume;
+        const step = Math.abs(distance) < 0.01 ? distance : distance * 0.2;
+        audio.volume = Math.min(Math.max(audio.volume + step, 0), 1);
+
+        if (audio.volume <= 0.005) {
+            audio.volume = 0;
+            if (!audio.paused) audio.pause();
+        } else if (audio.paused && !document.hidden) {
+            play();
+        }
+
+        if (Math.abs(target - audio.volume) > 0.003) {
+            ticking = setTimeout(fade, 40);
+            return;
+        }
+        ticking = 0;
+    };
+
+    const update = () => {
+        const ratio = heroVisibleRatio(hero);
+        target = document.hidden || broken ? 0 : MAX_VOLUME * ratio * ratio;
+        if (ticking) return;
+        ticking = setTimeout(fade, 0);
+    };
+
+    audio.addEventListener('error', () => {
+        broken = true;
+    });
+
+    audio.addEventListener('canplay', () => {
+        update();
+        tryLoud();
+    });
+
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update, { passive: true });
+    document.addEventListener('visibilitychange', update);
+
+    ['pointerdown', 'click', 'keydown', 'touchend', 'wheel', 'scroll'].forEach((event) => {
+        addEventListener(event, unmute, { passive: true, capture: true });
+    });
+
+    update();
+    tryLoud();
+}
+
 function setupHeroScene() {
     const media = document.querySelector('.hero-scene-media');
     const layer = document.querySelector('[data-leaves]');
@@ -764,7 +915,14 @@ function setupHeroScene() {
         return;
     }
 
-    if (media) keepHeroVideoPlaying(media);
+    if (media) {
+        if (prefersLightScene()) {
+            media.remove();
+        } else {
+            keepHeroVideoPlaying(media);
+            pauseHeroVideoOffscreen(media, document.querySelector('.hero'));
+        }
+    }
 
     if (!layer) return;
 
@@ -798,12 +956,15 @@ async function setupGithubActivity() {
 }
 
 mountLayout(document.body.dataset.page);
+setupHeaderScroll();
+setupScrollEntry();
 setupTheme();
 setupNavMenu();
 setupPageData(null);
 setupFamily();
 setupTypewriter();
 setupHeroScene();
+setupHeroTheme();
 setupHolo();
 observeReveals();
 

@@ -32,7 +32,7 @@ const BRAND = `
     <span class="brand-prompt" aria-hidden="true">&gt;_</span><span>vitor<span class="brand-accent">.dev</span></span>
 </a>`;
 
-const MENU_ONLY = ['inicio', 'contato'];
+const MENU_ONLY = ['inicio'];
 
 const navLink = (page, active) => {
     const current = page.key === active ? ' aria-current="page"' : '';
@@ -53,7 +53,6 @@ const header = (active) => `
                 <svg class="icon icon-dark" aria-hidden="true"><use href="#i-moon"></use></svg>
                 <svg class="icon icon-light" aria-hidden="true"><use href="#i-sun"></use></svg>
             </button>
-            <a class="btn btn-ghost nav-cta" href="contato.html">contato()</a>
             <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
                 <svg class="icon nav-icon-open" aria-hidden="true"><use href="#i-menu"></use></svg>
                 <svg class="icon nav-icon-close" aria-hidden="true"><use href="#i-close"></use></svg>

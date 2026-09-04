@@ -30,9 +30,10 @@ python3 -m http.server 8000
 | `github.js` | bloco de atividade pública no rodapé |
 | `format.js` | número, data relativa e cor por linguagem |
 | `repos.js` | descrições escritas à mão e categorias dos repositórios |
-| `holo.js` | efeito de holograma (usado na página Sobre) |
+| `holo.js` | efeito de holograma (sem uso na marcação atual) |
 | `media/family-hero.mp4` | cena da família em loop, fundo da entrada da home |
-| `media/curriculo-vitor-soares.pdf` | currículo em PDF, linkado no hero, na trajetória, no rodapé e no contato |
+| `media/hero-theme.mp3` | trilha do hero (opcional): sem o arquivo, o áudio falha em silêncio |
+| `media/curriculo-vitor-soares.pdf` | currículo em PDF, linkado na trajetória (Sobre), no rodapé e no contato |
 | `api/github.js` | proxy opcional (ver abaixo) |
 
 As descrições de `repos.js` têm prioridade sobre as do GitHub. Repositórios que não estão
@@ -136,3 +137,17 @@ sips -Z 1200 -s formatOptions 55 foto.jpg
 fotos antigas. O que estiver lá tem prioridade sobre o nome do arquivo, e
 serve de reserva caso a API do GitHub esteja fora do ar ou no limite de
 requisições.
+
+## Trilha da entrada
+
+O hero toca `media/hero-theme.mp3` em loop, com o volume preso à parte visível
+da imagem: cheio no topo, sumindo conforme a cena sai da tela e voltando ao
+máximo quando ela reaparece. Sem o arquivo, o `<audio>` falha em silêncio e o
+botão de som é removido.
+
+O `<audio>` tem `autoplay`. Quando a política do navegador bloqueia som sem
+interação, a primeira rolagem, clique, toque ou tecla libera a trilha. Não há
+botão de desligar.
+
+Use só música que você tenha direito de publicar. Faixa de terceiros (inclusive
+áudio tirado do YouTube) não entra aqui.
