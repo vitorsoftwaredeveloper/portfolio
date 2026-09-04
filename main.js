@@ -731,6 +731,58 @@ function setupFamily() {
     });
 }
 
+function keepHeroVideoPlaying(media) {
+    const play = () => {
+        const attempt = media.play();
+        if (attempt) attempt.catch(() => {});
+    };
+
+    play();
+    media.addEventListener('loadeddata', play);
+
+    const retry = () => {
+        if (media.paused && !document.hidden) play();
+    };
+
+    ['pointerdown', 'touchstart', 'scroll'].forEach((event) => {
+        addEventListener(event, retry, { passive: true });
+    });
+
+    document.addEventListener('visibilitychange', retry);
+}
+
+function setupHeroScene() {
+    const media = document.querySelector('.hero-scene-media');
+    const layer = document.querySelector('[data-leaves]');
+
+    if (prefersReducedMotion.matches) {
+        if (media) {
+            media.removeAttribute('autoplay');
+            media.pause();
+            media.hidden = true;
+        }
+        return;
+    }
+
+    if (media) keepHeroVideoPlaying(media);
+
+    if (!layer) return;
+
+    const leaves = Array.from({ length: 14 }, () => {
+        const width = 8 + Math.random() * 9;
+        const style = [
+            `left:${Math.round(Math.random() * 96)}%`,
+            `width:${width.toFixed(1)}px`,
+            `height:${(width * 0.6).toFixed(1)}px`,
+            `animation-delay:${(Math.random() * 16).toFixed(1)}s`,
+            `animation-duration:${(10 + Math.random() * 8).toFixed(1)}s`
+        ].join(';');
+        return `<span class="leaf" style="${style}"></span>`;
+    });
+
+    layer.innerHTML = leaves.join('');
+}
+
 async function setupHolo() {
     const figure = document.querySelector('.holo');
     if (!figure) return;
@@ -751,6 +803,7 @@ setupNavMenu();
 setupPageData(null);
 setupFamily();
 setupTypewriter();
+setupHeroScene();
 setupHolo();
 observeReveals();
 

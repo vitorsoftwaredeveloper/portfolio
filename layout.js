@@ -22,6 +22,8 @@ const SPRITE = `
     <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6l-6 6"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></symbol>
     <symbol id="i-fork" viewBox="0 0 24 24"><path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M7 8v8"/><path d="M17 8v1a3 3 0 0 1 -3 3h-4a3 3 0 0 0 -3 3v1"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6l6 -6"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></symbol>
 </svg>`;
 
@@ -68,6 +70,7 @@ const footer = (active) => `
             <p class="footer-name">Vitor Soares</p>
             <p class="footer-role">Desenvolvedor Fullstack desde 2019</p>
             <p class="footer-note">Node.js, TypeScript, React e AWS. Aberto a freelas e full-time, remoto.</p>
+            <a class="btn btn-ghost footer-cv" href="media/curriculo-vitor-soares.pdf" download>Currículo em PDF<svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg></a>
         </div>
 
         <nav class="footer-col" aria-label="Páginas do site">

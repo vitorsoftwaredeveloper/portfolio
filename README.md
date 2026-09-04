@@ -30,7 +30,9 @@ python3 -m http.server 8000
 | `github.js` | bloco de atividade pública no rodapé |
 | `format.js` | número, data relativa e cor por linguagem |
 | `repos.js` | descrições escritas à mão e categorias dos repositórios |
-| `holo.js` | efeito de holograma do hero |
+| `holo.js` | efeito de holograma (usado na página Sobre) |
+| `media/family-hero.mp4` | cena da família em loop, fundo da entrada da home |
+| `media/curriculo-vitor-soares.pdf` | currículo em PDF, linkado no hero, na trajetória, no rodapé e no contato |
 | `api/github.js` | proxy opcional (ver abaixo) |
 
 As descrições de `repos.js` têm prioridade sobre as do GitHub. Repositórios que não estão

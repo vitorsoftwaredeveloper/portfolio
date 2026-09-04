@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vitor Soares | Desenvolvedor Fullstack</title>
-    <meta name="description" content="Vitor Soares: pai, marido e desenvolvedor fullstack desde 2019. O que me move, minha família e o código que escrevo.">
+    <meta name="description" content="Vitor Soares: pai, marido e desenvolvedor fullstack desde 2019. Minha família, minha trajetória por BTG Pactual e Phoebus, e o código que escrevo.">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0b1620">
     <link rel="icon" href="media/profile-photo.png">
     <meta property="og:title" content="Vitor Soares | Desenvolvedor Fullstack">
-    <meta property="og:description" content="Vitor Soares: pai, marido e desenvolvedor fullstack desde 2019. O que me move, minha família e o código que escrevo.">
-    <meta property="og:image" content="media/profile-photo.png">
+    <meta property="og:description" content="Vitor Soares: pai, marido e desenvolvedor fullstack desde 2019. Minha família, minha trajetória por BTG Pactual e Phoebus, e o código que escrevo.">
+    <meta property="og:image" content="media/family-hero.jpg">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pt_BR">
     <meta name="twitter:card" content="summary_large_image">
@@ -33,28 +33,42 @@
 
     <main id="conteudo">
         <section id="inicio" class="hero">
-            <div class="grid-backdrop" aria-hidden="true"></div>
-            <div class="hero-glow" aria-hidden="true"></div>
-            <div class="shell hero-grid">
-                <div class="hero-copy">
-                    <h1>Vitor<br><span class="neon">Soares</span></h1>
-                    <p class="hero-role" data-typewriter='["Desenvolvedor Fullstack","Node.js + TypeScript","Automação de testes"]'>Desenvolvedor Fullstack<span class="caret" aria-hidden="true">_</span></p>
-                    <p class="hero-lead">Transformo ideias abstratas em produtos digitais reais, do design da API à interface que o usuário toca.</p>
-                    <div class="hero-actions">
-                        <a class="btn btn-primary" href="projetos.html">Ver projetos</a>
-                        <a class="btn btn-ghost" href="contato.html">Falar comigo</a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <figure class="holo">
-                        <video class="holo-source" src="media/holo-loop.mp4" poster="media/holo-poster.jpg" width="384" height="480" muted loop playsinline autoplay preload="auto"></video>
-                        <canvas class="holo-canvas" role="img" aria-label="Vitor Soares digitando no notebook, renderizado como uma matriz de código"></canvas>
-                    </figure>
-                </div>
+            <div class="hero-scene" aria-hidden="true">
+                <video class="hero-scene-media" src="media/family-hero.mp4" poster="media/family-hero.jpg" muted loop playsinline autoplay preload="auto"></video>
+                <div class="hero-scene-veil"></div>
+                <div class="hero-wind"></div>
+                <div class="hero-leaves" data-leaves></div>
             </div>
+            <div class="shell hero-inner">
+                <p class="hero-badge"><span class="status-dot" aria-hidden="true"></span>disponível para novos projetos</p>
+                <h1>Vitor<br><span class="neon">Soares</span></h1>
+                <p class="hero-role" data-typewriter='["Desenvolvedor Fullstack","Node.js + TypeScript","AWS serverless","Automação de testes"]'>Desenvolvedor Fullstack<span class="caret" aria-hidden="true">_</span></p>
+                <p class="hero-lead">Antes do código, o que me move: a Morgana, o Samuel e a Clarice. É por eles — e com eles — que eu transformo ideias em produtos digitais desde 2019.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="projetos.html">Ver projetos</a>
+                    <a class="btn btn-ghost" href="contato.html">Falar comigo</a>
+                    <a class="btn btn-ghost" href="media/curriculo-vitor-soares.pdf" download>Baixar CV<svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg></a>
+                </div>
+                <dl class="hero-stats">
+                    <div><dt>anos de código</dt><dd data-stat="years">7</dd></div>
+                    <div><dt>empresas</dt><dd>4</dd></div>
+                    <div><dt>motivos pra tudo isso</dt><dd>3</dd></div>
+                </dl>
+            </div>
+            <a class="hero-scroll" href="#quem-eu-sou" aria-label="Ir para o conteúdo">
+                <span>scroll</span>
+                <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </a>
         </section>
 
-        <section class="section shell">
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span>/TypeScript</span><span>/React</span><span>/Node.js</span><span>/AWS Lambda</span><span>/EventBridge</span><span>/Kafka</span><span>/MongoDB</span><span>/PostgreSQL</span><span>/React Native</span><span>/Firebase</span><span>/Playwright</span><span>/Docker</span>
+                <span>/TypeScript</span><span>/React</span><span>/Node.js</span><span>/AWS Lambda</span><span>/EventBridge</span><span>/Kafka</span><span>/MongoDB</span><span>/PostgreSQL</span><span>/React Native</span><span>/Firebase</span><span>/Playwright</span><span>/Docker</span>
+            </div>
+        </div>
+
+        <section class="section shell" id="quem-eu-sou">
             <div class="reveal section-head">
                 <p class="tag">// quem eu sou</p>
                 <h2>O que me <span class="neon">move</span></h2>
@@ -93,6 +107,74 @@
             <div class="family-grid" id="family-grid" data-limit="6" data-href="familia.html"></div>
             <p class="page-cta reveal">
                 <a class="btn btn-ghost" href="familia.html">Ver todas as fotos</a>
+            </p>
+        </section>
+
+        <section class="section shell" id="trajetoria">
+            <div class="reveal section-head">
+                <p class="tag">// trajetória</p>
+                <h2>Onde eu já <span class="neon">trabalhei</span></h2>
+                <p class="section-lead">De balcão de distribuidora a serviços serverless em produção. Cada parada deixou alguma coisa.</p>
+            </div>
+
+            <ol class="timeline">
+                <li class="timeline-item reveal" data-current="true">
+                    <p class="timeline-period">09/2024 — atual</p>
+                    <div class="card timeline-card">
+                        <p class="timeline-role">Engenheiro de Software</p>
+                        <p class="timeline-company">Phoebus Tecnologia <span>· João Pessoa/PB</span></p>
+                        <ul class="arrow-list">
+                            <li>desenvolvimento e análise de software com foco em back-end</li>
+                            <li>arquitetura e implementação de serviços na AWS: Lambda, EC2, S3, EventBridge, CloudWatch e MSK</li>
+                        </ul>
+                        <ul class="timeline-stack">
+                            <li>Node.js</li><li>TypeScript</li><li>AWS</li><li>Kafka/MSK</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="timeline-item reveal">
+                    <p class="timeline-period">08/2025 — 12/2025</p>
+                    <div class="card timeline-card">
+                        <p class="timeline-role">Analista de QA</p>
+                        <p class="timeline-company">HGTX <span>· São Paulo/SP</span></p>
+                        <ul class="arrow-list">
+                            <li>análise e desenvolvimento de automações de testes ponta a ponta (E2E)</li>
+                        </ul>
+                        <ul class="timeline-stack">
+                            <li>Playwright</li><li>Automação E2E</li><li>CI</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="timeline-item reveal">
+                    <p class="timeline-period">03/2022 — 08/2024</p>
+                    <div class="card timeline-card">
+                        <p class="timeline-role">Analista de Sistemas (Front-End)</p>
+                        <p class="timeline-company">BTG Pactual <span>· RealTask · Rio de Janeiro/RJ</span></p>
+                        <ul class="arrow-list">
+                            <li>desenvolvimento e análise de software com foco em front-end</li>
+                            <li>monitoramento de aplicações com Datadog</li>
+                            <li>mentoria de estagiários em hard e soft skills</li>
+                            <li>atendimento e suporte a usuários do sistema</li>
+                        </ul>
+                        <ul class="timeline-stack">
+                            <li>React</li><li>TypeScript</li><li>Datadog</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="timeline-item reveal">
+                    <p class="timeline-period">07/2021 — 03/2022</p>
+                    <div class="card timeline-card">
+                        <p class="timeline-role">Assistente Administrativo</p>
+                        <p class="timeline-company">Guará Gás <span>· João Pessoa/PB</span></p>
+                        <ul class="arrow-list">
+                            <li>gestão e controle logístico da distribuidora: estoque, notas fiscais e atendimento ao cliente</li>
+                        </ul>
+                    </div>
+                </li>
+            </ol>
+
+            <p class="page-cta reveal">
+                <a class="btn btn-ghost" href="media/curriculo-vitor-soares.pdf" download>Baixar currículo em PDF<svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg></a>
             </p>
         </section>
 
