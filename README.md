@@ -75,3 +75,36 @@ independentemente do tráfego. A página passa a fazer **1 requisição em vez d
 
 O token só existe no servidor da Vercel; ele nunca chega ao navegador. A resposta do proxy
 contém apenas dados públicos do GitHub.
+
+## Adicionar fotos na página Inspiração
+
+A página lista a pasta `media/familia` pela API pública do GitHub, então
+basta subir o arquivo — nenhum código precisa ser editado.
+
+Pelo navegador ou pelo app do GitHub: abra `media/familia`, use
+**Add file → Upload files**, arraste a foto e confirme o commit.
+
+O nome do arquivo vira a legenda:
+
+| Arquivo | Legenda | Ano | Destaque |
+| --- | --- | --- | --- |
+| `2025-08_passeio-no-parque.jpg` | passeio no parque | 2025 | — |
+| `2024_natal-em-familia--largo.jpg` | natal em familia | 2024 | ocupa 2 colunas |
+| `primeiro-passo--alto.jpg` | primeiro passo | — | ocupa 2 linhas |
+
+Regras: o prefixo de data (`AAAA` ou `AAAA-MM`) é opcional e define o ano;
+hífens e sublinhados viram espaços; os sufixos `--largo` e `--alto`
+destacam a foto no mosaico. As fotos aparecem da mais nova para a mais
+antiga.
+
+Redimensione antes de subir (1200px no maior lado, ~150 KB) para a página
+continuar leve:
+
+```
+sips -Z 1200 -s formatOptions 55 foto.jpg
+```
+
+`familia.js` guarda legendas e textos alternativos escritos à mão para as
+fotos antigas. O que estiver lá tem prioridade sobre o nome do arquivo, e
+serve de reserva caso a API do GitHub esteja fora do ar ou no limite de
+requisições.

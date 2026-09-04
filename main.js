@@ -1,5 +1,5 @@
 import { CATEGORIES, FEATURED, REPOS } from './repos.js';
-import { FAMILY_PHOTOS } from './familia.js';
+import { FAMILY_PHOTOS, loadFamilyPhotos } from './familia.js';
 import { mountLayout } from './layout.js';
 import { loadGithubData, refreshGithubData, USER } from './gh-api.js';
 import { escapeHtml, formatNumber, formatRelative, languageColor } from './format.js';
@@ -417,12 +417,13 @@ async function hydrate(loader) {
 
 function familyCard(photo, index) {
     const span = photo.span ? ` family-item--${photo.span}` : '';
+    const size = photo.width && photo.height ? ` width="${photo.width}" height="${photo.height}"` : '';
     return `
         <button class="family-item reveal${span}" type="button" data-photo-index="${index}" aria-label="Ampliar foto: ${escapeHtml(photo.caption)}">
-            <img src="${photo.src}" alt="${escapeHtml(photo.alt)}" width="${photo.width}" height="${photo.height}" loading="lazy" decoding="async" />
+            <img src="${photo.src}" alt="${escapeHtml(photo.alt)}"${size} loading="lazy" decoding="async" />
             <span class="family-meta">
                 <span class="family-caption">${escapeHtml(photo.caption)}</span>
-                <span class="family-year">${escapeHtml(photo.year)}</span>
+                <span class="family-year">${escapeHtml(photo.year || '')}</span>
             </span>
         </button>`;
 }
@@ -434,8 +435,22 @@ function setupFamily() {
     const caption = document.getElementById('lightbox-caption');
     if (!grid || !dialog || !image || !caption) return;
 
-    grid.innerHTML = FAMILY_PHOTOS.map(familyCard).join('');
-    observeReveals(grid);
+    let photos = FAMILY_PHOTOS;
+
+    const paintGrid = () => {
+        grid.innerHTML = photos.map(familyCard).join('');
+        observeReveals(grid);
+    };
+
+    paintGrid();
+
+    const fingerprint = (list) => list.map((photo) => photo.src).join('|');
+
+    loadFamilyPhotos().then((live) => {
+        if (dialog.open || fingerprint(live) === fingerprint(photos)) return;
+        photos = live;
+        paintGrid();
+    });
 
     const figure = dialog.querySelector('.lightbox-figure');
     let current = 0;
@@ -444,14 +459,18 @@ function setupFamily() {
     const paint = (photo) => {
         image.src = photo.src;
         image.alt = photo.alt;
-        image.width = photo.width;
-        image.height = photo.height;
-        caption.textContent = `${photo.caption} · ${photo.year}`;
+        image.removeAttribute('width');
+        image.removeAttribute('height');
+        if (photo.width && photo.height) {
+            image.width = photo.width;
+            image.height = photo.height;
+        }
+        caption.textContent = [photo.caption, photo.year].filter(Boolean).join(' · ');
     };
 
     const show = (index, direction = 0) => {
-        current = (index + FAMILY_PHOTOS.length) % FAMILY_PHOTOS.length;
-        const photo = FAMILY_PHOTOS[current];
+        current = (index + photos.length) % photos.length;
+        const photo = photos[current];
 
         if (prefersReducedMotion.matches) {
             figure.dataset.swap = 'idle';
