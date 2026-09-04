@@ -70,28 +70,54 @@ const CAPTIONS = [
 const REPO = 'vitorsoftwaredeveloper/portfolio';
 const FOLDER = 'media/familia';
 const IMAGE = /\.(jpe?g|png|webp|avif|gif)$/i;
-const NAMED = /^(?:(\d{4})(?:-\d{2})?[_-])?(.+?)(?:--(alto|largo))?$/;
+const SPAN_FLAG = /--(alto|largo)$/i;
+const DATE = /(?:^|[^\d])((?:19|20)\d{2})(?:[-_.]?(0[1-9]|1[0-2])(?:[-_.]?(0[1-9]|[12]\d|3[01]))?)?(?![\d])/;
+const NOISE = /\b(whats?app|image|img|photo|foto|picture|pic|screenshot|captura|tela|de|at|as|pm|am|copy|copia|final|edit|editado|pxl|dsc|dcim|mvimg|burst|pano(?:rama)?|vid|mov|gopro|sam|wa\d*|\d{1,2}[.:h]\d{2}(?:[.:]\d{2})?|\d+)\b/gi;
+
+const MONTHS = [
+    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+];
 
 const overrides = new Map(CAPTIONS.map((photo) => [photo.src.split('/').pop(), photo]));
 
 const SPANS = { alto: 'tall', largo: 'wide' };
 
-function fromFileName(name, raw) {
+function readName(name) {
     const bare = name.replace(IMAGE, '');
-    const [, year, slug, flag] = NAMED.exec(bare) || [];
-    const caption = (slug || bare).replace(/[_-]+/g, ' ').trim();
+    const flag = (SPAN_FLAG.exec(bare) || [])[1];
+    const withoutFlag = bare.replace(SPAN_FLAG, '');
+
+    const [stamp, year, month] = DATE.exec(withoutFlag) || [];
+    const slug = (stamp ? withoutFlag.replace(stamp, ' ') : withoutFlag)
+        .replace(/[_-]+/g, ' ')
+        .replace(NOISE, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    let caption = slug;
+    if (!caption && month) caption = `${MONTHS[Number(month) - 1]} de ${year}`;
+    if (!caption && year) caption = `foto de ${year}`;
+    if (!caption) caption = 'sem legenda';
+
+    return { caption, year: year || '', month: month || '', span: SPANS[(flag || '').toLowerCase()] };
+}
+
+function fromFileName(name, raw) {
+    const { caption, year, month, span } = readName(name);
     return {
         src: `${FOLDER}/${name}`,
         raw,
         alt: `Foto da família: ${caption}`,
         caption,
-        year: year || '',
-        span: SPANS[flag] || undefined
+        year,
+        month,
+        span
     };
 }
 
 function sortKey(photo) {
-    return `${photo.year || '0000'}-${photo.src.split('/').pop()}`;
+    return `${photo.year || '0000'}-${photo.month || '00'}-${photo.src.split('/').pop()}`;
 }
 
 function sortPhotos(list) {

@@ -100,7 +100,18 @@ arquivos dentro de pull requests, mas não envia arquivos. No celular, use
 o navegador em github.com — se o botão **Add file** não aparecer, peça a
 versão para computador no menu do navegador.
 
-O nome do arquivo vira a legenda:
+Não precisa renomear nada: nomes de câmera e de WhatsApp são entendidos
+sozinhos. A data vira o ano da legenda e o resto do lixo é descartado.
+
+| Arquivo | Legenda | Ano |
+| --- | --- | --- |
+| `WhatsApp Image 2026-06-10 at 4.44.41 PM.jpeg` | junho de 2026 | 2026 |
+| `IMG_20250815_143022.jpg` | agosto de 2025 | 2025 |
+| `PXL_20260210_181512345.jpg` | fevereiro de 2026 | 2026 |
+| `foto.jpg` | sem legenda | — |
+
+Se quiser escolher a legenda, dê um nome ao arquivo. O que sobra depois de
+remover a data vira o texto:
 
 | Arquivo | Legenda | Ano | Destaque |
 | --- | --- | --- | --- |
@@ -108,10 +119,9 @@ O nome do arquivo vira a legenda:
 | `2024_natal-em-familia--largo.jpg` | natal em familia | 2024 | ocupa 2 colunas |
 | `primeiro-passo--alto.jpg` | primeiro passo | — | ocupa 2 linhas |
 
-Regras: o prefixo de data (`AAAA` ou `AAAA-MM`) é opcional e define o ano;
-hífens e sublinhados viram espaços; os sufixos `--largo` e `--alto`
+Regras: hífens e sublinhados viram espaços; os sufixos `--largo` e `--alto`
 destacam a foto no mosaico. As fotos aparecem da mais nova para a mais
-antiga.
+antiga, usando ano e mês do nome do arquivo.
 
 Redimensione antes de subir (1200px no maior lado, ~150 KB) para a página
 continuar leve:
