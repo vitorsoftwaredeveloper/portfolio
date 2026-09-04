@@ -533,6 +533,11 @@ summary,
     gap: 40px;
 }
 
+.front-grid[data-simple] {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
 .product {
     display: grid;
     gap: 16px;

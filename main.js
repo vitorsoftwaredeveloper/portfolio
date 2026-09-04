@@ -397,11 +397,13 @@ function productBlock(project, byName) {
 function setupFrontend(data) {
     const section = document.getElementById('front-section');
     const grid = document.getElementById('front-grid');
-    if (!section || !grid || !FRONTEND.length) return;
+    if (!grid || !FRONTEND.length) return;
 
     const byName = new Map((data ? mergeRepos(data.repos) : mergeRepos(null)).map((repo) => [repo.name, repo]));
-    grid.innerHTML = FRONTEND.map((project) => productBlock(project, byName)).join('');
-    section.hidden = false;
+    grid.innerHTML = grid.dataset.simple
+        ? FRONTEND.map(frontCard).join('')
+        : FRONTEND.map((project) => productBlock(project, byName)).join('');
+    if (section) section.hidden = false;
     observeReveals(grid);
 }
 
