@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vitor Soares | Desenvolvedor Fullstack</title>
-    <meta name="description" content="Portfólio de Vitor Soares, desenvolvedor fullstack desde 2019. Node.js, TypeScript, React e AWS.">
+    <meta name="description" content="Vitor Soares: pai, marido e desenvolvedor fullstack desde 2019. O que me move, minha família e o código que escrevo.">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0b1620">
     <link rel="icon" href="media/profile-photo.png">
     <meta property="og:title" content="Vitor Soares | Desenvolvedor Fullstack">
-    <meta property="og:description" content="Portfólio de Vitor Soares, desenvolvedor fullstack desde 2019. Node.js, TypeScript, React e AWS.">
+    <meta property="og:description" content="Vitor Soares: pai, marido e desenvolvedor fullstack desde 2019. O que me move, minha família e o código que escrevo.">
     <meta property="og:image" content="media/profile-photo.png">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pt_BR">
@@ -54,48 +54,60 @@
             </div>
         </section>
 
-        <section class="band" aria-label="Números e stack">
-            <div class="shell">
-                <dl class="stats" aria-live="polite">
-                    <div>
-                        <dt data-stat="years">7</dt>
-                        <dd>anos escrevendo código</dd>
-                    </div>
-                    <div>
-                        <dt data-stat="repos">29</dt>
-                        <dd>repositórios públicos</dd>
-                    </div>
-                    <div>
-                        <dt data-stat="languages">5</dt>
-                        <dd>linguagens em produção e estudo</dd>
-                    </div>
-                    <div data-stat-block="followers" hidden>
-                        <dt data-stat="followers">0</dt>
-                        <dd>seguidores no github</dd>
-                    </div>
-                </dl>
+        <section class="section shell">
+            <div class="reveal section-head">
+                <p class="tag">// quem eu sou</p>
+                <h2>O que me <span class="neon">move</span></h2>
+                <p class="section-lead">Antes de qualquer stack, tem gente. É por elas que eu abro o editor todo dia.</p>
             </div>
-            <div class="marquee" aria-hidden="true">
-                <ul class="marquee-track">
-                    <li>TypeScript</li><li>React</li><li>Node.js</li><li>AWS Lambda</li><li>Serverless</li><li>MongoDB</li><li>PostgreSQL</li><li>Cypress</li><li>Docker</li><li>Kotlin</li><li>Go</li><li>Next.js</li>
-                    <li>TypeScript</li><li>React</li><li>Node.js</li><li>AWS Lambda</li><li>Serverless</li><li>MongoDB</li><li>PostgreSQL</li><li>Cypress</li><li>Docker</li><li>Kotlin</li><li>Go</li><li>Next.js</li>
-                </ul>
+            <div class="about-grid">
+                <article class="card about-main reveal">
+                    <p>Sou Vitor Soares, desenvolvedor fullstack desde 2019. Casado com a Morgana e pai do Samuel e da Clarice, meu maior bem.</p>
+                    <p>Gosto de desafios. Desenvolver software é um desafio, logo gosto de desenvolver software. O que me prende não é a linguagem da vez, é ver uma ideia virar algo que alguém usa de verdade.</p>
+                    <p>Acredito no poder da tecnologia para resolver problemas e melhorar a vida das pessoas. Por isso escolho projetos que resolvem algo concreto para alguém.</p>
+                </article>
+                <div class="about-side">
+                    <article class="card reveal">
+                        <p class="card-label">o que me move</p>
+                        <ul class="arrow-list">
+                            <li>minha família, em primeiro lugar</li>
+                            <li>problemas reais, não demonstração bonita</li>
+                            <li>projetos que servem à comunidade</li>
+                            <li>aprender coisa nova sem largar o que já sei</li>
+                        </ul>
+                    </article>
+                    <article class="card reveal">
+                        <p class="card-label">status</p>
+                        <p class="status"><span class="status-dot" aria-hidden="true"></span>Aberto a freelas e full-time</p>
+                    </article>
+                </div>
             </div>
+        </section>
+
+        <section class="section shell family">
+            <div class="reveal section-head">
+                <p class="tag">// inspiração</p>
+                <h2>Fora do editor, <span class="neon">eles</span></h2>
+                <p class="section-lead">A parte da vida que não cabe em commit.</p>
+            </div>
+            <div class="family-grid" id="family-grid" data-limit="6" data-href="familia.html"></div>
+            <p class="page-cta reveal">
+                <a class="btn btn-ghost" href="familia.html">Ver todas as fotos</a>
+            </p>
         </section>
 
         <section class="section shell">
             <div class="reveal section-head">
-                <p class="tag">// destaques</p>
-                <h2>Coisas que eu <span class="neon">construí</span></h2>
-                <p class="section-lead">Três projetos que resumem o que eu faço. O resto está na página de projetos.</p>
+                <p class="tag">// e o trabalho</p>
+                <h2>Também escrevo <span class="neon">código</span></h2>
+                <p class="section-lead">Node.js, TypeScript, React e AWS, do design da API à interface que o usuário toca.</p>
             </div>
-
-            <div class="bento" id="featured-grid" data-limit="3"></div>
-
             <p class="page-cta reveal">
-                <a class="btn btn-primary" href="projetos.html">Ver todos os repositórios</a>
+                <a class="btn btn-primary" href="projetos.html">Ver projetos</a>
+                <a class="btn btn-ghost" href="contato.html">Falar comigo</a>
             </p>
         </section>
+
     </main>
 
     <div data-layout="footer"></div>

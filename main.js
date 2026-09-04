@@ -415,23 +415,25 @@ function setupFeatured(data) {
     observeReveals(featuredGrid);
 }
 
-const REPOS_VISIVEIS = 6;
+const REPOS_INICIAIS = 6;
+const REPOS_POR_VEZ = 5;
 
 let renderRepos = null;
-let reposExpanded = false;
+let reposVisiveis = REPOS_INICIAIS;
 
-function moreCard(rest, total) {
+function moreCard(rest) {
+    const passo = Math.min(REPOS_POR_VEZ, rest);
     return `
-        <button class="repo-card repo-more reveal" type="button" data-repos-toggle="abrir">
-            <span class="repo-more-count">+${formatNumber(rest)}</span>
-            <span class="repo-more-label">ver os ${formatNumber(total)} repositórios</span>
+        <button class="repo-card repo-more reveal" type="button" data-repos-toggle="mais">
+            <span class="repo-more-count">+${formatNumber(passo)}</span>
+            <span class="repo-more-label">mostrar mais · faltam ${formatNumber(rest)}</span>
             <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
         </button>`;
 }
 
-function lessCard(total) {
+function lessCard() {
     return `
-        <button class="repo-card repo-more reveal" type="button" data-repos-toggle="fechar">
+        <button class="repo-card repo-more reveal" type="button" data-repos-toggle="menos">
             <span class="repo-more-label">mostrar menos</span>
             <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
         </button>`;
@@ -463,15 +465,15 @@ function setupRepos(data) {
         )
         .join('');
 
-    renderRepos = (filter, keepExpanded = false) => {
-        if (!keepExpanded) reposExpanded = false;
+    renderRepos = (filter, manterQuantidade = false) => {
+        if (!manterQuantidade) reposVisiveis = REPOS_INICIAIS;
         const list = filter === 'todos' ? repos : repos.filter((repo) => repo.category === filter);
-        const visible = reposExpanded ? list : list.slice(0, REPOS_VISIVEIS);
+        const visible = list.slice(0, reposVisiveis);
         const rest = list.length - visible.length;
 
         let toggle = '';
-        if (rest > 0) toggle = moreCard(rest, list.length);
-        else if (reposExpanded && list.length > REPOS_VISIVEIS) toggle = lessCard(list.length);
+        if (rest > 0) toggle = moreCard(rest);
+        else if (list.length > REPOS_INICIAIS) toggle = lessCard();
 
         repoGrid.innerHTML = visible.map(repoCard).join('') + toggle;
         empty.hidden = list.length > 0;
@@ -499,9 +501,10 @@ function setupRepos(data) {
         repoGrid.addEventListener('click', (event) => {
             const button = event.target.closest('[data-repos-toggle]');
             if (!button) return;
-            reposExpanded = button.dataset.reposToggle === 'abrir';
+            const abrindo = button.dataset.reposToggle === 'mais';
+            reposVisiveis = abrindo ? reposVisiveis + REPOS_POR_VEZ : REPOS_INICIAIS;
             renderRepos(activeFilter(), true);
-            if (!reposExpanded) repoGrid.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            if (!abrindo) repoGrid.scrollIntoView({ block: 'start', behavior: 'smooth' });
         });
         repoGrid.dataset.bound = 'true';
     }
@@ -530,33 +533,49 @@ async function hydrate(loader) {
     if (link) link.href = `https://github.com/${USER}`;
 }
 
-function familyCard(photo, index) {
+function familyCard(photo, index, href) {
     const span = photo.span ? ` family-item--${photo.span}` : '';
     const size = photo.width && photo.height ? ` width="${photo.width}" height="${photo.height}"` : '';
     const raw = photo.raw ? ` data-raw="${escapeHtml(photo.raw)}"` : '';
+    const tag = href
+        ? `<a class="family-item reveal${span}" href="${escapeHtml(href)}" aria-label="Ver todas as fotos, a partir de: ${escapeHtml(photo.caption)}">`
+        : `<button class="family-item reveal${span}" type="button" data-photo-index="${index}" aria-label="Ampliar foto: ${escapeHtml(photo.caption)}">`;
     return `
-        <button class="family-item reveal${span}" type="button" data-photo-index="${index}" aria-label="Ampliar foto: ${escapeHtml(photo.caption)}">
+        ${tag}
             <img src="${photo.src}" alt="${escapeHtml(photo.alt)}"${size}${raw} loading="lazy" decoding="async" />
             <span class="family-meta">
                 <span class="family-caption">${escapeHtml(photo.caption)}</span>
                 <span class="family-year">${escapeHtml(photo.year || '')}</span>
             </span>
-        </button>`;
+        ${href ? '</a>' : '</button>'}`;
 }
 
 function setupFamily() {
     const grid = document.getElementById('family-grid');
+    if (!grid) return;
+
+    const href = grid.dataset.href || '';
+    const limit = Number(grid.dataset.limit) || 0;
     const dialog = document.getElementById('lightbox');
     const image = document.getElementById('lightbox-image');
     const caption = document.getElementById('lightbox-caption');
-    if (!grid || !dialog || !image || !caption) return;
 
     let photos = FAMILY_PHOTOS;
 
     const paintGrid = () => {
-        grid.innerHTML = photos.map(familyCard).join('');
+        const list = limit ? photos.slice(0, limit) : photos;
+        grid.innerHTML = list.map((photo, index) => familyCard(photo, index, href)).join('');
         observeReveals(grid);
     };
+
+    if (!dialog || !image || !caption) {
+        paintGrid();
+        loadFamilyPhotos().then((live) => {
+            photos = live;
+            paintGrid();
+        });
+        return;
+    }
 
     const useRawOnError = (event) => {
         const img = event.target;
