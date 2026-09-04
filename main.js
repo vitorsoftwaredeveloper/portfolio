@@ -418,9 +418,10 @@ async function hydrate(loader) {
 function familyCard(photo, index) {
     const span = photo.span ? ` family-item--${photo.span}` : '';
     const size = photo.width && photo.height ? ` width="${photo.width}" height="${photo.height}"` : '';
+    const raw = photo.raw ? ` data-raw="${escapeHtml(photo.raw)}"` : '';
     return `
         <button class="family-item reveal${span}" type="button" data-photo-index="${index}" aria-label="Ampliar foto: ${escapeHtml(photo.caption)}">
-            <img src="${photo.src}" alt="${escapeHtml(photo.alt)}"${size} loading="lazy" decoding="async" />
+            <img src="${photo.src}" alt="${escapeHtml(photo.alt)}"${size}${raw} loading="lazy" decoding="async" />
             <span class="family-meta">
                 <span class="family-caption">${escapeHtml(photo.caption)}</span>
                 <span class="family-year">${escapeHtml(photo.year || '')}</span>
@@ -442,6 +443,16 @@ function setupFamily() {
         observeReveals(grid);
     };
 
+    const useRawOnError = (event) => {
+        const img = event.target;
+        if (img.tagName !== 'IMG' || !img.dataset.raw || img.dataset.usedRaw) return;
+        img.dataset.usedRaw = 'true';
+        img.src = img.dataset.raw;
+    };
+
+    grid.addEventListener('error', useRawOnError, true);
+    image.addEventListener('error', useRawOnError);
+
     paintGrid();
 
     const fingerprint = (list) => list.map((photo) => photo.src).join('|');
@@ -457,6 +468,9 @@ function setupFamily() {
     let swapToken = 0;
 
     const paint = (photo) => {
+        delete image.dataset.usedRaw;
+        if (photo.raw) image.dataset.raw = photo.raw;
+        else delete image.dataset.raw;
         image.src = photo.src;
         image.alt = photo.alt;
         image.removeAttribute('width');

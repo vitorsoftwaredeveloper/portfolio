@@ -76,12 +76,13 @@ const overrides = new Map(CAPTIONS.map((photo) => [photo.src.split('/').pop(), p
 
 const SPANS = { alto: 'tall', largo: 'wide' };
 
-function fromFileName(name) {
+function fromFileName(name, raw) {
     const bare = name.replace(IMAGE, '');
     const [, year, slug, flag] = NAMED.exec(bare) || [];
     const caption = (slug || bare).replace(/[_-]+/g, ' ').trim();
     return {
         src: `${FOLDER}/${name}`,
+        raw,
         alt: `Foto da família: ${caption}`,
         caption,
         year: year || '',
@@ -109,9 +110,9 @@ export async function loadFamilyPhotos() {
         const files = (await response.json())
             .filter((file) => file.type === 'file' && IMAGE.test(file.name))
             .map((file) => {
-                const parsed = fromFileName(file.name);
+                const parsed = fromFileName(file.name, file.download_url);
                 const curated = overrides.get(file.name);
-                return { ...parsed, ...(curated || {}) };
+                return { ...parsed, ...(curated || {}), raw: file.download_url };
             });
 
         return files.length ? sortPhotos(files) : FAMILY_PHOTOS;

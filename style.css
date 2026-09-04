@@ -101,6 +101,17 @@ ul {
     border-radius: 6px;
 }
 
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+a,
+button,
+summary,
+[role='button'] {
+    -webkit-tap-highlight-color: transparent;
+}
+
 .sprite {
     position: absolute;
     width: 0;

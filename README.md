@@ -81,9 +81,19 @@ contém apenas dados públicos do GitHub.
 A página lista a pasta `media/familia` pela API pública do GitHub, então
 basta subir o arquivo — nenhum código precisa ser editado.
 
-Pelo navegador (no computador ou no celular): abra `media/familia`, use
-**Add file → Upload files**, escolha a foto e confirme o commit. Limite de
-25 MiB por arquivo e 100 arquivos por vez.
+Link direto para o formulário de envio, já apontando para a pasta certa:
+
+<https://github.com/vitorsoftwaredeveloper/portfolio/upload/main/media/familia>
+
+Vale salvar esse endereço nos favoritos ou na tela inicial do celular: ele
+abre direto em **Upload files**, sem navegar pelo repositório. Escolha a
+foto e confirme o commit. Limite de 25 MiB por arquivo e 100 arquivos por
+vez.
+
+A foto aparece na página assim que o commit entra. O GitHub Pages leva
+cerca de um minuto para publicar o arquivo; nesse intervalo a página
+carrega a imagem direto do `raw.githubusercontent.com`, então nada quebra
+enquanto isso.
 
 O aplicativo do GitHub não serve para isso: ele lê o repositório e edita
 arquivos dentro de pull requests, mas não envia arquivos. No celular, use
