@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Família | Vitor Soares</title>
+    <meta name="description" content="A parte da vida que não cabe em commit: fotos da família de Vitor Soares.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0b1620">
+    <link rel="icon" href="media/profile-photo.png">
+    <meta property="og:title" content="Família | Vitor Soares">
+    <meta property="og:description" content="A parte da vida que não cabe em commit: fotos da família de Vitor Soares.">
+    <meta property="og:image" content="media/profile-photo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="media/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="media/fonts/dmsans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Proxy opcional da API do GitHub (ver README). Vazio = o navegador chama api.github.com direto. -->
+    <meta name="gh-proxy" content="">
+    <link rel="stylesheet" href="media/fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        (() => {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+</head>
+<body data-page="familia">
+    <div data-layout="header"></div>
+
+    <main id="conteudo">
+        <section class="section shell family">
+            <div class="reveal section-head">
+                <p class="tag">// família</p>
+                <h2>Fora do editor, <span class="neon">eles</span></h2>
+                <p class="section-lead">A parte da vida que não cabe em commit. Toque numa foto para ampliar.</p>
+            </div>
+            <div class="family-grid" id="family-grid"></div>
+        </section>
+
+        <dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
+            <button class="lightbox-close icon-btn" type="button" data-lightbox-close aria-label="Fechar">
+                <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <figure class="lightbox-figure">
+                <div class="lightbox-stage">
+                    <img id="lightbox-image" alt="" />
+                    <button class="lightbox-nav lightbox-prev icon-btn" type="button" data-lightbox-step="-1" aria-label="Foto anterior">
+                        <svg class="icon" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+                    </button>
+                    <button class="lightbox-nav lightbox-next icon-btn" type="button" data-lightbox-step="1" aria-label="Próxima foto">
+                        <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+                    </button>
+                </div>
+                <figcaption id="lightbox-caption"></figcaption>
+            </figure>
+        </dialog>
+    </main>
+
+    <div data-layout="footer"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

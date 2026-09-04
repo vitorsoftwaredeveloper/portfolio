@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato | Vitor Soares</title>
+    <meta name="description" content="Fale com Vitor Soares por WhatsApp, e-mail, GitHub, LinkedIn ou Instagram.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0b1620">
+    <link rel="icon" href="media/profile-photo.png">
+    <meta property="og:title" content="Contato | Vitor Soares">
+    <meta property="og:description" content="Fale com Vitor Soares por WhatsApp, e-mail, GitHub, LinkedIn ou Instagram.">
+    <meta property="og:image" content="media/profile-photo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="media/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="media/fonts/dmsans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Proxy opcional da API do GitHub (ver README). Vazio = o navegador chama api.github.com direto. -->
+    <meta name="gh-proxy" content="">
+    <link rel="stylesheet" href="media/fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        (() => {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+</head>
+<body data-page="contato">
+    <div data-layout="header"></div>
+
+    <main id="conteudo">
+        <section class="section contact">
+            <div class="contact-glow" aria-hidden="true"></div>
+            <div class="shell">
+                <div class="reveal section-head">
+                    <p class="tag">// contato</p>
+                    <h2>Tem um projeto? <span class="neon">Bora conversar.</span></h2>
+                    <p class="section-lead">Escolhe o canal que preferir. Respondo rápido em todos eles.</p>
+                </div>
+                <div class="channels">
+                    <a class="channel reveal" href="https://wa.me/5583999523137" target="_blank" rel="noreferrer">
+                        <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+                        <span>
+                            <span class="channel-name">WhatsApp</span>
+                            <span class="channel-handle">(83) 99952-3137</span>
+                        </span>
+                        <svg class="icon channel-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+                    </a>
+                    <a class="channel reveal" href="mailto:vitorsoftwaredeveloper@gmail.com">
+                        <svg class="icon" aria-hidden="true"><use href="#i-mail"></use></svg>
+                        <span>
+                            <span class="channel-name">E-mail</span>
+                            <span class="channel-handle">vitorsoftwaredeveloper@gmail.com</span>
+                        </span>
+                        <svg class="icon channel-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+                    </a>
+                    <a class="channel reveal" href="https://github.com/vitorsoftwaredeveloper" target="_blank" rel="noreferrer">
+                        <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+                        <span>
+                            <span class="channel-name">GitHub</span>
+                            <span class="channel-handle">vitorsoftwaredeveloper</span>
+                        </span>
+                        <svg class="icon channel-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+                    </a>
+                    <a class="channel reveal" href="https://www.linkedin.com/in/vitorsoaresf/" target="_blank" rel="noreferrer">
+                        <svg class="icon" aria-hidden="true"><use href="#i-linkedin"></use></svg>
+                        <span>
+                            <span class="channel-name">LinkedIn</span>
+                            <span class="channel-handle">Vitor Soares</span>
+                        </span>
+                        <svg class="icon channel-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+                    </a>
+                    <a class="channel reveal" href="https://www.instagram.com/vitorsoares.ferreira/" target="_blank" rel="noreferrer">
+                        <svg class="icon" aria-hidden="true"><use href="#i-instagram"></use></svg>
+                        <span>
+                            <span class="channel-name">Instagram</span>
+                            <span class="channel-handle">@vitorsoares.ferreira</span>
+                        </span>
+                        <svg class="icon channel-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+                    </a>
+                </div>
+
+                <section class="gh-activity" id="gh-activity" data-state="loading" aria-label="Atividade pública no GitHub">
+                    <div class="gh-head">
+                        <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+                        <span>atividade pública no github</span>
+                        <span class="gh-synced" data-gh="synced"></span>
+                        <span class="gh-live" aria-hidden="true"></span>
+                    </div>
+                    <div class="gh-body">
+                        <div class="gh-metric">
+                            <p class="gh-label">pushes recentes</p>
+                            <p class="gh-value" data-gh="total">--</p>
+                        </div>
+                        <div class="gh-metric">
+                            <p class="gh-label">este mês</p>
+                            <p class="gh-value" data-gh="month">--</p>
+                        </div>
+                        <div class="gh-metric">
+                            <p class="gh-label">hoje</p>
+                            <p class="gh-value" data-gh="today">--</p>
+                        </div>
+                        <a class="gh-commit" data-gh="commit-link" href="https://github.com/vitorsoftwaredeveloper" target="_blank" rel="noreferrer">
+                            <p class="gh-label">último commit público</p>
+                            <p class="gh-message" data-gh="message">carregando</p>
+                            <p class="gh-meta" data-gh="meta"></p>
+                        </a>
+                    </div>
+                    <p class="gh-error">Não foi possível carregar a atividade agora. <a href="https://github.com/vitorsoftwaredeveloper" target="_blank" rel="noreferrer">Ver no GitHub</a>.</p>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <div data-layout="footer"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

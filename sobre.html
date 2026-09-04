@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre | Vitor Soares</title>
+    <meta name="description" content="Quem é Vitor Soares: bio, stack que domina e como trabalha em cada projeto.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0b1620">
+    <link rel="icon" href="media/profile-photo.png">
+    <meta property="og:title" content="Sobre | Vitor Soares">
+    <meta property="og:description" content="Quem é Vitor Soares: bio, stack que domina e como trabalha em cada projeto.">
+    <meta property="og:image" content="media/profile-photo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="media/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="media/fonts/dmsans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Proxy opcional da API do GitHub (ver README). Vazio = o navegador chama api.github.com direto. -->
+    <meta name="gh-proxy" content="">
+    <link rel="stylesheet" href="media/fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        (() => {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+</head>
+<body data-page="sobre">
+    <div data-layout="header"></div>
+
+    <main id="conteudo">
+        <section class="section shell">
+            <div class="reveal section-head">
+                <p class="tag">// sobre</p>
+                <h2>Código com <span class="neon">propósito</span></h2>
+            </div>
+            <div class="about-grid">
+                <article class="card about-main reveal">
+                    <p>Sou Vitor Soares, desenvolvedor fullstack desde 2019. Casado com a Morgana e pai do Samuel e da Clarice, meu maior bem. Profissionalmente, sou apaixonado por criar soluções digitais inovadoras e eficientes, transformando ideias em produtos que realmente atendem quem usa.</p>
+                    <p>Acredito no poder da tecnologia para resolver problemas e melhorar a vida das pessoas. Por isso estou sempre em busca de novos desafios para crescer e contribuir com projetos que fazem diferença.</p>
+                </article>
+                <div class="about-side">
+                    <article class="card reveal">
+                        <p class="card-label">status</p>
+                        <p class="status"><span class="status-dot" aria-hidden="true"></span>Aberto a freelas e full-time</p>
+                    </article>
+                    <article class="card reveal">
+                        <p class="card-label">como eu trabalho</p>
+                        <ul class="arrow-list">
+                            <li>entrega contínua, sem surpresa no deploy</li>
+                            <li>testes automatizados desde o primeiro commit</li>
+                            <li>comunicação clara, sem jargão desnecessário</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section shell">
+            <div class="reveal section-head">
+                <p class="tag">// skills</p>
+                <h2>O que eu <span class="neon">domino</span></h2>
+            </div>
+            <div class="skill-grid">
+                <article class="card reveal">
+                    <h3>Front end</h3>
+                    <p>Interfaces rápidas e acessíveis com React, TypeScript e design systems próprios.</p>
+                    <ul><li>React</li><li>Next.js</li><li>TypeScript</li><li>CSS moderno</li></ul>
+                </article>
+                <article class="card reveal">
+                    <h3>Back end</h3>
+                    <p>APIs escaláveis, mensageria e arquitetura orientada a eventos.</p>
+                    <ul><li>Node.js</li><li>Express</li><li>MongoDB</li><li>PostgreSQL</li></ul>
+                </article>
+                <article class="card reveal">
+                    <h3>Cloud &amp; DevOps</h3>
+                    <p>Infra serverless na AWS, deploy contínuo e observabilidade.</p>
+                    <ul><li>Lambda</li><li>API Gateway</li><li>S3</li><li>Docker</li></ul>
+                </article>
+                <article class="card reveal">
+                    <h3>Qualidade</h3>
+                    <p>Testes de unidade, integração e ponta a ponta rodando no pipeline.</p>
+                    <ul><li>Cypress</li><li>Jest</li><li>Playwright</li><li>GitHub Actions</li></ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div data-layout="footer"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

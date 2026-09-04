@@ -1,6 +1,6 @@
 import { CATEGORIES, FEATURED, REPOS } from './repos.js';
-import { initHolo } from './holo.js';
-import { initGithubActivity } from './github.js';
+import { FAMILY_PHOTOS } from './familia.js';
+import { mountLayout } from './layout.js';
 import { loadGithubData, refreshGithubData, USER } from './gh-api.js';
 import { escapeHtml, formatNumber, formatRelative, languageColor } from './format.js';
 
@@ -280,18 +280,23 @@ function renderMarquee(repos) {
     track.innerHTML = `${items}${items}`;
 }
 
-function setupProjects(data) {
+function setupFeatured(data) {
     const featuredGrid = document.getElementById('featured-grid');
+    if (!featuredGrid) return;
+
+    const featured = mergeFeatured(data ? data.repos : null);
+    const limit = Number(featuredGrid.dataset.limit) || featured.length;
+    featuredGrid.innerHTML = featured.slice(0, limit).map(featuredCard).join('');
+    observeReveals(featuredGrid);
+}
+
+function setupRepos(data) {
     const repoGrid = document.getElementById('repo-grid');
     const filters = document.getElementById('filters');
     const empty = document.getElementById('repo-empty');
-    if (!featuredGrid || !repoGrid || !filters || !empty) return;
+    if (!repoGrid || !filters || !empty) return;
 
-    const live = data ? data.repos : null;
-    const repos = mergeRepos(live);
-    const featured = mergeFeatured(live);
-
-    featuredGrid.innerHTML = featured.map(featuredCard).join('');
+    const repos = mergeRepos(data ? data.repos : null);
 
     const known = new Set(CATEGORIES.map((category) => category.id));
     repos.forEach((repo) => {
@@ -331,8 +336,16 @@ function setupProjects(data) {
     }
 
     render(countOf(current) > 0 ? current : 'todos');
-    observeReveals(featuredGrid);
+}
 
+function setupPageData(data) {
+    setupFeatured(data);
+    setupRepos(data);
+    if (!data) {
+        renderStats(null, []);
+        return;
+    }
+    const repos = mergeRepos(data.repos);
     renderStats(data, repos);
     renderMarquee(repos);
     renderLanguageBar(languageBreakdown(repos));
@@ -340,25 +353,130 @@ function setupProjects(data) {
 
 async function hydrate(loader) {
     const data = await loader();
-    setupProjects(data);
+    setupPageData(data);
     const link = document.querySelector('[data-gh="profile-link"]');
     if (link) link.href = `https://github.com/${USER}`;
 }
 
-const holoFigure = document.querySelector('.holo');
-if (holoFigure) initHolo(holoFigure);
+function familyCard(photo, index) {
+    const span = photo.span ? ` family-item--${photo.span}` : '';
+    return `
+        <button class="family-item reveal${span}" type="button" data-photo-index="${index}" aria-label="Ampliar foto: ${escapeHtml(photo.caption)}">
+            <img src="${photo.src}" alt="${escapeHtml(photo.alt)}" width="${photo.width}" height="${photo.height}" loading="lazy" decoding="async" />
+            <span class="family-meta">
+                <span class="family-caption">${escapeHtml(photo.caption)}</span>
+                <span class="family-year">${escapeHtml(photo.year)}</span>
+            </span>
+        </button>`;
+}
 
+function setupFamily() {
+    const grid = document.getElementById('family-grid');
+    const dialog = document.getElementById('lightbox');
+    const image = document.getElementById('lightbox-image');
+    const caption = document.getElementById('lightbox-caption');
+    if (!grid || !dialog || !image || !caption) return;
+
+    grid.innerHTML = FAMILY_PHOTOS.map(familyCard).join('');
+    observeReveals(grid);
+
+    const figure = dialog.querySelector('.lightbox-figure');
+    let current = 0;
+    let swapToken = 0;
+
+    const paint = (photo) => {
+        image.src = photo.src;
+        image.alt = photo.alt;
+        image.width = photo.width;
+        image.height = photo.height;
+        caption.textContent = `${photo.caption} · ${photo.year}`;
+    };
+
+    const show = (index, direction = 0) => {
+        current = (index + FAMILY_PHOTOS.length) % FAMILY_PHOTOS.length;
+        const photo = FAMILY_PHOTOS[current];
+
+        if (prefersReducedMotion.matches) {
+            figure.dataset.swap = 'idle';
+            paint(photo);
+            return;
+        }
+
+        if (!direction) {
+            swapToken += 1;
+            figure.dataset.swap = 'opening';
+            paint(photo);
+            void image.offsetWidth;
+            figure.dataset.swap = 'idle';
+            return;
+        }
+
+        const token = ++swapToken;
+        const preload = new Image();
+        preload.src = photo.src;
+        figure.dataset.swap = direction > 0 ? 'leaving-left' : 'leaving-right';
+
+        setTimeout(() => {
+            if (token !== swapToken) return;
+            paint(photo);
+            figure.dataset.swap = direction > 0 ? 'entering-right' : 'entering-left';
+            void image.offsetWidth;
+            figure.dataset.swap = 'idle';
+        }, 180);
+    };
+
+    const step = (direction) => show(current + direction, direction);
+
+    grid.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-photo-index]');
+        if (!button) return;
+        dialog.showModal();
+        show(Number(button.dataset.photoIndex));
+    });
+
+    dialog.addEventListener('click', (event) => {
+        const stepButton = event.target.closest('[data-lightbox-step]');
+        if (stepButton) {
+            step(Number(stepButton.dataset.lightboxStep));
+            return;
+        }
+        if (event.target.closest('[data-lightbox-close]') || !event.target.closest('.lightbox-stage')) dialog.close();
+    });
+
+    dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') step(1);
+        if (event.key === 'ArrowLeft') step(-1);
+    });
+}
+
+async function setupHolo() {
+    const figure = document.querySelector('.holo');
+    if (!figure) return;
+    const { initHolo } = await import('./holo.js');
+    initHolo(figure);
+}
+
+async function setupGithubActivity() {
+    const panel = document.getElementById('gh-activity');
+    if (!panel) return;
+    const { initGithubActivity } = await import('./github.js');
+    initGithubActivity(panel);
+}
+
+mountLayout(document.body.dataset.page);
 setupTheme();
-setupProjects(null);
+setupPageData(null);
+setupFamily();
 setupTypewriter();
+setupHolo();
 observeReveals();
 
 hydrate(loadGithubData);
-initGithubActivity(document.getElementById('gh-activity'));
+setupGithubActivity();
 
 // Voltar pelo bfcache (botão voltar do navegador) também conta como "entrar no site".
 window.addEventListener('pageshow', (event) => {
     if (!event.persisted) return;
     hydrate(refreshGithubData);
-    initGithubActivity(document.getElementById('gh-activity'));
+    setupGithubActivity();
 });
