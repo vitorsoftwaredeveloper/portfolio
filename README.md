@@ -81,8 +81,14 @@ contém apenas dados públicos do GitHub.
 A página lista a pasta `media/familia` pela API pública do GitHub, então
 basta subir o arquivo — nenhum código precisa ser editado.
 
-Pelo navegador ou pelo app do GitHub: abra `media/familia`, use
-**Add file → Upload files**, arraste a foto e confirme o commit.
+Pelo navegador (no computador ou no celular): abra `media/familia`, use
+**Add file → Upload files**, escolha a foto e confirme o commit. Limite de
+25 MiB por arquivo e 100 arquivos por vez.
+
+O aplicativo do GitHub não serve para isso: ele lê o repositório e edita
+arquivos dentro de pull requests, mas não envia arquivos. No celular, use
+o navegador em github.com — se o botão **Add file** não aparecer, peça a
+versão para computador no menu do navegador.
 
 O nome do arquivo vira a legenda:
 
