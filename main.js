@@ -6,6 +6,7 @@ import { loadGithubData, refreshGithubData, USER } from './gh-api.js';
 import { escapeHtml, formatNumber, formatRelative, languageColor } from './format.js';
 
 const CAREER_START = 2019;
+const SEM_DATA = 'sem data';
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 const FEATURED_CATEGORY = {
@@ -562,19 +563,73 @@ function setupFamily() {
     const image = document.getElementById('lightbox-image');
     const caption = document.getElementById('lightbox-caption');
 
+    const filters = document.getElementById('family-filters');
+
     let photos = FAMILY_PHOTOS;
+    let visible = photos;
+
+    const yearOf = (photo) => photo.year || SEM_DATA;
+
+    const activeYear = () => {
+        const chip = filters && filters.querySelector('[aria-pressed="true"]');
+        return chip ? chip.dataset.filter : 'todos';
+    };
+
+    const paintFilters = () => {
+        if (!filters) return;
+
+        const counts = new Map();
+        photos.forEach((photo) => {
+            const year = yearOf(photo);
+            counts.set(year, (counts.get(year) || 0) + 1);
+        });
+
+        const years = [...counts.keys()].filter((year) => year !== SEM_DATA).sort().reverse();
+        if (counts.has(SEM_DATA)) years.push(SEM_DATA);
+
+        const wanted = activeYear();
+        const current = counts.has(wanted) ? wanted : 'todos';
+
+        filters.innerHTML = [['todos', photos.length], ...years.map((year) => [year, counts.get(year)])]
+            .map(
+                ([year, total]) => `
+            <button class="chip" type="button" data-filter="${escapeHtml(year)}" aria-pressed="${year === current}">
+                ${escapeHtml(year)} <span aria-hidden="true">(${total})</span>
+            </button>`
+            )
+            .join('');
+    };
 
     const paintGrid = () => {
-        const list = limit ? photos.slice(0, limit) : photos;
+        const year = activeYear();
+        visible = year === 'todos' ? photos : photos.filter((photo) => yearOf(photo) === year);
+        const list = limit ? visible.slice(0, limit) : visible;
         grid.innerHTML = list.map((photo, index) => familyCard(photo, index, href)).join('');
         observeReveals(grid);
     };
 
-    if (!dialog || !image || !caption) {
+    const repaint = () => {
+        paintFilters();
         paintGrid();
+    };
+
+    if (filters && !filters.dataset.bound) {
+        filters.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-filter]');
+            if (!button) return;
+            filters.querySelectorAll('[data-filter]').forEach((chip) => {
+                chip.setAttribute('aria-pressed', String(chip === button));
+            });
+            paintGrid();
+        });
+        filters.dataset.bound = 'true';
+    }
+
+    if (!dialog || !image || !caption) {
+        repaint();
         loadFamilyPhotos().then((live) => {
             photos = live;
-            paintGrid();
+            repaint();
         });
         return;
     }
@@ -589,14 +644,14 @@ function setupFamily() {
     grid.addEventListener('error', useRawOnError, true);
     image.addEventListener('error', useRawOnError);
 
-    paintGrid();
+    repaint();
 
     const fingerprint = (list) => list.map((photo) => photo.src).join('|');
 
     loadFamilyPhotos().then((live) => {
         if (dialog.open || fingerprint(live) === fingerprint(photos)) return;
         photos = live;
-        paintGrid();
+        repaint();
     });
 
     const figure = dialog.querySelector('.lightbox-figure');
@@ -619,8 +674,8 @@ function setupFamily() {
     };
 
     const show = (index, direction = 0) => {
-        current = (index + photos.length) % photos.length;
-        const photo = photos[current];
+        current = (index + visible.length) % visible.length;
+        const photo = visible[current];
 
         if (prefersReducedMotion.matches) {
             figure.dataset.swap = 'idle';
