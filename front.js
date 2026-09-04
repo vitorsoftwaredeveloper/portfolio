@@ -8,7 +8,11 @@ export const FRONTEND = [
         shot: 'media/projetos/health-car.jpg',
         alt: 'Tela de entrada do HealthCar, com o formulário de login sobre fundo escuro',
         url: 'https://github.com/vitorsoftwaredeveloper/health_car',
-        homepage: 'https://health-car-orpin.vercel.app'
+        homepage: 'https://health-car-orpin.vercel.app',
+        parts: [
+            { repo: 'health_car', role: 'interface', main: true },
+            { repo: 'health_car_api', role: 'API, leitura do OBD e cálculo de saúde' }
+        ]
     },
     {
         name: 'Aquarela Kids',
@@ -18,7 +22,8 @@ export const FRONTEND = [
         stack: ['Next.js', 'React', 'Turbopack', 'PWA'],
         shot: 'media/projetos/aquarela.jpg',
         alt: 'Página inicial do Aquarela Kids, com a agenda do dia da criança em um celular',
-        homepage: 'https://aquarela-app.vercel.app'
+        homepage: 'https://aquarela-app.vercel.app',
+        parts: []
     },
     {
         name: 'Resgatar',
@@ -29,6 +34,12 @@ export const FRONTEND = [
         shot: 'media/projetos/resgatar-browser.jpg',
         alt: 'Tela de entrada do Resgatar, com versículo à esquerda e formulário de login à direita',
         url: 'https://github.com/vitorsoftwaredeveloper/resgatar-browser',
-        homepage: 'https://resgatar-browser.vercel.app'
+        homepage: 'https://resgatar-browser.vercel.app',
+        parts: [
+            { repo: 'resgatar-browser', role: 'interface web', main: true },
+            { repo: 'resgatar_app', role: 'aplicativo em React Native e Expo' },
+            { repo: 'resgatar_community', role: 'API, contribuições e cobranças' },
+            { repo: 'resgatar-privacy-policy', role: 'política de privacidade das lojas' }
+        ]
     }
 ];

@@ -362,12 +362,45 @@ function frontCard(project) {
         </article>`;
 }
 
-function setupFrontend() {
+function partCard(part, repo) {
+    const url = repo ? repo.url : `https://github.com/${USER}/${part.repo}`;
+    const language = repo && repo.language
+        ? `<span class="repo-lang"><i style="--dot:${languageColor(repo.language)}" aria-hidden="true"></i>${escapeHtml(repo.language)}</span>`
+        : '';
+    const pushed = repo && repo.pushedAt
+        ? `<span class="repo-updated">${escapeHtml(formatRelative(repo.pushedAt))}</span>`
+        : '';
+    const badge = part.main ? '<span class="part-badge">front</span>' : '';
+    return `
+        <a class="part-card" href="${url}" target="_blank" rel="noreferrer">
+            <span class="part-top">
+                <span class="part-name">${escapeHtml(part.repo)}</span>
+                ${badge}
+                <svg class="icon card-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+            </span>
+            <span class="part-role">${escapeHtml(part.role)}</span>
+            <span class="repo-meta">${language}${pushed}</span>
+        </a>`;
+}
+
+function productBlock(project, byName) {
+    const parts = (project.parts || []).map((part) => partCard(part, byName.get(part.repo))).join('');
+    const aside = parts
+        ? `<div class="product-parts">
+                <p class="card-label">peças deste produto</p>
+                ${parts}
+            </div>`
+        : '';
+    return `<div class="product${aside ? '' : ' product--solo'}">${frontCard(project)}${aside}</div>`;
+}
+
+function setupFrontend(data) {
     const section = document.getElementById('front-section');
     const grid = document.getElementById('front-grid');
     if (!section || !grid || !FRONTEND.length) return;
 
-    grid.innerHTML = FRONTEND.map(frontCard).join('');
+    const byName = new Map((data ? mergeRepos(data.repos) : mergeRepos(null)).map((repo) => [repo.name, repo]));
+    grid.innerHTML = FRONTEND.map((project) => productBlock(project, byName)).join('');
     section.hidden = false;
     observeReveals(grid);
 }
@@ -477,6 +510,7 @@ function setupRepos(data) {
 }
 
 function setupPageData(data) {
+    setupFrontend(data);
     setupFeatured(data);
     setupRepos(data);
     if (!data) {
@@ -638,7 +672,6 @@ async function setupGithubActivity() {
 mountLayout(document.body.dataset.page);
 setupTheme();
 setupNavMenu();
-setupFrontend();
 setupPageData(null);
 setupFamily();
 setupTypewriter();

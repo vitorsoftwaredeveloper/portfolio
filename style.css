@@ -530,7 +530,75 @@ summary,
 .front-grid {
     margin-top: 28px;
     display: grid;
+    gap: 40px;
+}
+
+.product {
+    display: grid;
     gap: 16px;
+    align-items: start;
+}
+
+.product-parts {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+}
+
+.part-card {
+    display: grid;
+    gap: 6px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--border-strong);
+    border-radius: var(--radius-card);
+    background: var(--card);
+    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.part-card:hover {
+    border-left-color: var(--primary);
+    transform: translateX(3px);
+}
+
+.part-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.part-name {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+}
+
+.part-badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: var(--radius-tag);
+    background: color-mix(in oklab, var(--primary) 18%, transparent);
+    color: var(--primary);
+}
+
+.part-top .card-arrow {
+    margin-left: auto;
+    color: var(--muted-fg);
+}
+
+.part-card:hover .card-arrow {
+    color: var(--primary);
+}
+
+.part-role {
+    font-size: 0.82rem;
+    color: var(--muted-fg);
+}
+
+.product-parts .card-label {
+    margin-bottom: 2px;
 }
 
 .front-card {
@@ -583,9 +651,15 @@ summary,
     font-size: 0.85rem;
 }
 
-@media (min-width: 768px) {
-    .front-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (min-width: 900px) {
+    .product {
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .product--solo {
+        grid-template-columns: minmax(0, 1.5fr);
+        max-width: 640px;
     }
 }
 
