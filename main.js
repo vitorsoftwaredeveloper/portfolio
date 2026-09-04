@@ -382,6 +382,28 @@ function setupFeatured(data) {
     observeReveals(featuredGrid);
 }
 
+const REPOS_VISIVEIS = 6;
+
+let renderRepos = null;
+let reposExpanded = false;
+
+function moreCard(rest, total) {
+    return `
+        <button class="repo-card repo-more reveal" type="button" data-repos-toggle="abrir">
+            <span class="repo-more-count">+${formatNumber(rest)}</span>
+            <span class="repo-more-label">ver os ${formatNumber(total)} repositórios</span>
+            <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+        </button>`;
+}
+
+function lessCard(total) {
+    return `
+        <button class="repo-card repo-more reveal" type="button" data-repos-toggle="fechar">
+            <span class="repo-more-label">mostrar menos</span>
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </button>`;
+}
+
 function setupRepos(data) {
     const repoGrid = document.getElementById('repo-grid');
     const filters = document.getElementById('filters');
@@ -408,11 +430,24 @@ function setupRepos(data) {
         )
         .join('');
 
-    const render = (filter) => {
+    renderRepos = (filter, keepExpanded = false) => {
+        if (!keepExpanded) reposExpanded = false;
         const list = filter === 'todos' ? repos : repos.filter((repo) => repo.category === filter);
-        repoGrid.innerHTML = list.map(repoCard).join('');
+        const visible = reposExpanded ? list : list.slice(0, REPOS_VISIVEIS);
+        const rest = list.length - visible.length;
+
+        let toggle = '';
+        if (rest > 0) toggle = moreCard(rest, list.length);
+        else if (reposExpanded && list.length > REPOS_VISIVEIS) toggle = lessCard(list.length);
+
+        repoGrid.innerHTML = visible.map(repoCard).join('') + toggle;
         empty.hidden = list.length > 0;
         observeReveals(repoGrid);
+    };
+
+    const activeFilter = () => {
+        const chip = filters.querySelector('[aria-pressed="true"]');
+        return chip ? chip.dataset.filter : 'todos';
     };
 
     if (!filters.dataset.bound) {
@@ -422,12 +457,23 @@ function setupRepos(data) {
             filters.querySelectorAll('[data-filter]').forEach((chip) => {
                 chip.setAttribute('aria-pressed', String(chip === button));
             });
-            render(button.dataset.filter);
+            renderRepos(button.dataset.filter);
         });
         filters.dataset.bound = 'true';
     }
 
-    render(countOf(current) > 0 ? current : 'todos');
+    if (!repoGrid.dataset.bound) {
+        repoGrid.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-repos-toggle]');
+            if (!button) return;
+            reposExpanded = button.dataset.reposToggle === 'abrir';
+            renderRepos(activeFilter(), true);
+            if (!reposExpanded) repoGrid.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+        repoGrid.dataset.bound = 'true';
+    }
+
+    renderRepos(countOf(current) > 0 ? current : 'todos', true);
 }
 
 function setupPageData(data) {
