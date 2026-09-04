@@ -53,6 +53,23 @@ export const FEATURED = [
 
 export const REPOS = [
   {
+    name: 'aquarela_app',
+    category: 'produtos',
+    language: 'TypeScript',
+    description:
+      'Interface do Aquarela Kids em três perfis: responsável acompanha agenda, mural e financeiro; professor lança o dia da turma; escola cuida de matrículas, mensalidades e relatórios.',
+    url: 'https://github.com/vitorsoftwaredeveloper/aquarela_app',
+    homepage: 'https://aquarela-app.vercel.app'
+  },
+  {
+    name: 'aquarela_serverless',
+    category: 'backend',
+    language: 'TypeScript',
+    description:
+      'API serverless do Aquarela Kids: agendas, avisos, turmas e professores, com mensalidades, despesas e pagamentos por MercadoPago sobre MongoDB.',
+    url: 'https://github.com/vitorsoftwaredeveloper/aquarela_serverless'
+  },
+  {
     name: 'funchat',
     category: 'produtos',
     language: 'JavaScript',

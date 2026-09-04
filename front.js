@@ -18,12 +18,16 @@ export const FRONTEND = [
         name: 'Aquarela Kids',
         kind: 'Web app',
         description:
-            'A rotina do berçário à pré-escola na mão da família: agenda diária, fotos, avisos e financeiro reunidos, aproximando escola e responsáveis.',
-        stack: ['Next.js', 'React', 'Turbopack', 'PWA'],
+            'A rotina do berçário à pré-escola na palma da mão: agenda diária, mural de recados, avisos e financeiro. Três áreas em um só app — responsável acompanha a criança, professor lança o dia, escola cuida de turmas, mensalidades e relatórios.',
+        stack: ['Next.js 16', 'React 19', 'TypeScript', 'AWS Amplify', 'Firebase', 'React Hook Form', 'Vitest'],
         shot: 'media/projetos/aquarela.jpg',
         alt: 'Página inicial do Aquarela Kids, com a agenda do dia da criança em um celular',
+        url: 'https://github.com/vitorsoftwaredeveloper/aquarela_app',
         homepage: 'https://aquarela-app.vercel.app',
-        parts: []
+        parts: [
+            { repo: 'aquarela_app', role: 'interface dos três perfis', main: true },
+            { repo: 'aquarela_serverless', role: 'API serverless: turmas, mensalidades e pagamentos' }
+        ]
     },
     {
         name: 'Resgatar',
