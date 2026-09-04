@@ -145,10 +145,9 @@ da imagem: cheio no topo, sumindo conforme a cena sai da tela e voltando ao
 máximo quando ela reaparece. Sem o arquivo, o `<audio>` falha em silêncio e o
 botão de som é removido.
 
-O `<audio>` tem `autoplay`. Quando a política do navegador bloqueia som sem
-interação, aparece no canto da cena um aviso "toque para ouvir": qualquer
-clique, toque ou tecla libera a trilha e o aviso some de vez. Se o navegador
-deixa tocar sozinho, o aviso nem chega a aparecer. Não há botão de desligar.
+A trilha só começa no clique do botão "ouvir", no canto da cena. Depois do
+clique o botão sai com um fade e não volta; a partir daí só o volume ligado
+à rolagem controla o som. Sem o arquivo de áudio, o botão nem aparece.
 
 Use só música que você tenha direito de publicar. Faixa de terceiros (inclusive
 áudio tirado do YouTube) não entra aqui.

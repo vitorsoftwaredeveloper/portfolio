@@ -850,58 +850,19 @@ function heroVisibleRatio(hero) {
 function setupHeroTheme() {
     const hero = document.querySelector('.hero');
     const audio = document.getElementById('hero-theme');
-    if (!hero || !audio) return;
+    const button = document.getElementById('hero-hint');
+    if (!hero || !audio || !button) return;
 
     const MAX_VOLUME = 0.15;
     let target = 0;
     let ticking = 0;
-    let broken = false;
+    let started = false;
 
     audio.volume = 0;
 
-    const hint = document.getElementById('hero-hint');
-
-    let hintTimer = 0;
-
-    const hideHint = () => {
-        if (!hint || hint.hidden) return;
-        hint.dataset.leaving = 'true';
-        hintTimer = setTimeout(() => {
-            hint.hidden = true;
-        }, 400);
-    };
-
-    const showHint = () => {
-        if (!hint || broken) return;
-        if (!audio.muted && !audio.paused) return;
-        clearTimeout(hintTimer);
-        delete hint.dataset.leaving;
-        hint.hidden = false;
-    };
-
     const play = () => {
-        if (broken) return;
         const attempt = audio.play();
-        if (attempt) attempt.catch(() => {
-            if (!audio.muted) showHint();
-        });
-    };
-
-    const tryLoud = () => {
-        if (broken) return;
-        audio.muted = false;
-        const attempt = audio.play();
-        if (!attempt) return;
-        attempt.catch(() => {
-            audio.muted = true;
-            play();
-        });
-    };
-
-    const unmute = () => {
-        audio.muted = false;
-        if (target > 0) play();
-        hideHint();
+        if (attempt) attempt.catch(() => {});
     };
 
     const fade = () => {
@@ -925,33 +886,30 @@ function setupHeroTheme() {
 
     const update = () => {
         const ratio = heroVisibleRatio(hero);
-        target = document.hidden || broken ? 0 : MAX_VOLUME * ratio * ratio;
+        target = started && !document.hidden ? MAX_VOLUME * ratio * ratio : 0;
         if (ticking) return;
         ticking = setTimeout(fade, 0);
     };
 
     audio.addEventListener('error', () => {
-        broken = true;
+        button.remove();
     });
 
-    audio.addEventListener('canplay', () => {
+    audio.addEventListener('loadedmetadata', () => {
+        button.hidden = false;
+    });
+
+    button.addEventListener('click', () => {
+        started = true;
+        button.dataset.leaving = 'true';
+        setTimeout(() => button.remove(), 600);
         update();
-        tryLoud();
+        play();
     });
 
     addEventListener('scroll', update, { passive: true });
     addEventListener('resize', update, { passive: true });
     document.addEventListener('visibilitychange', update);
-
-    ['pointerdown', 'click', 'keydown', 'touchend', 'wheel', 'scroll'].forEach((event) => {
-        addEventListener(event, unmute, { passive: true, capture: true });
-    });
-
-    if (hint) hint.addEventListener('click', unmute);
-
-    update();
-    tryLoud();
-    setTimeout(showHint, 1400);
 }
 
 function setupHeroScene() {
