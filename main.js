@@ -1,5 +1,6 @@
 import { CATEGORIES, FEATURED, REPOS } from './repos.js';
 import { FAMILY_PHOTOS, loadFamilyPhotos } from './familia.js';
+import { FRONTEND } from './front.js';
 import { mountLayout } from './layout.js';
 import { loadGithubData, refreshGithubData, USER } from './gh-api.js';
 import { escapeHtml, formatNumber, formatRelative, languageColor } from './format.js';
@@ -337,6 +338,40 @@ function renderMarquee(repos) {
     track.innerHTML = `${items}${items}`;
 }
 
+function frontCard(project) {
+    const stack = project.stack.map((item) => `<li>${escapeHtml(item)}</li>`).join('');
+    const shot = project.shot
+        ? `<img class="front-shot" src="${escapeHtml(project.shot)}" alt="${escapeHtml(project.alt)}" width="1000" height="593" loading="lazy" decoding="async" />`
+        : '';
+    const code = project.url
+        ? `<a class="btn btn-ghost" href="${project.url}" target="_blank" rel="noreferrer">Código</a>`
+        : '';
+    const live = project.homepage
+        ? `<a class="btn btn-primary" href="${project.homepage}" target="_blank" rel="noreferrer">Ver no ar</a>`
+        : '';
+    return `
+        <article class="card front-card reveal">
+            ${shot}
+            <div class="front-body">
+                <span class="kind">${escapeHtml(project.kind)}</span>
+                <h3>${escapeHtml(project.name)}</h3>
+                <p>${escapeHtml(project.description)}</p>
+                <ul class="tech-list">${stack}</ul>
+                <div class="front-links">${live}${code}</div>
+            </div>
+        </article>`;
+}
+
+function setupFrontend() {
+    const section = document.getElementById('front-section');
+    const grid = document.getElementById('front-grid');
+    if (!section || !grid || !FRONTEND.length) return;
+
+    grid.innerHTML = FRONTEND.map(frontCard).join('');
+    section.hidden = false;
+    observeReveals(grid);
+}
+
 function setupFeatured(data) {
     const featuredGrid = document.getElementById('featured-grid');
     if (!featuredGrid) return;
@@ -557,6 +592,7 @@ async function setupGithubActivity() {
 mountLayout(document.body.dataset.page);
 setupTheme();
 setupNavMenu();
+setupFrontend();
 setupPageData(null);
 setupFamily();
 setupTypewriter();
