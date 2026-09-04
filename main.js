@@ -344,10 +344,10 @@ function frontCard(project) {
         ? `<img class="front-shot" src="${escapeHtml(project.shot)}" alt="${escapeHtml(project.alt)}" width="1000" height="593" loading="lazy" decoding="async" />`
         : '';
     const code = project.url
-        ? `<a class="btn btn-ghost" href="${project.url}" target="_blank" rel="noreferrer">Código</a>`
+        ? `<a class="icon-btn front-link" href="${project.url}" target="_blank" rel="noreferrer" title="Código no GitHub" aria-label="Ver o código de ${escapeHtml(project.name)} no GitHub"><svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg></a>`
         : '';
     const live = project.homepage
-        ? `<a class="btn btn-primary" href="${project.homepage}" target="_blank" rel="noreferrer">Ver no ar</a>`
+        ? `<a class="icon-btn front-link front-link--live" href="${project.homepage}" target="_blank" rel="noreferrer" title="Abrir o site" aria-label="Abrir ${escapeHtml(project.name)} no ar"><svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg></a>`
         : '';
     return `
         <article class="card front-card reveal">
