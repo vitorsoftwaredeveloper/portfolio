@@ -2,7 +2,7 @@ const PAGES = [
     { key: 'inicio', href: 'index.html', label: 'Início' },
     { key: 'projetos', href: 'projetos.html', label: 'Projetos' },
     { key: 'sobre', href: 'sobre.html', label: 'Sobre' },
-    { key: 'familia', href: 'familia.html', label: 'Família' },
+    { key: 'familia', href: 'familia.html', label: 'Inspiração' },
     { key: 'contato', href: 'contato.html', label: 'Contato' }
 ];
 
@@ -17,6 +17,7 @@ const SPRITE = `
     <symbol id="i-sun" viewBox="0 0 24 24"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"/></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
     <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6l6 6"/></symbol>
     <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6l-6 6"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></symbol>
@@ -29,9 +30,12 @@ const BRAND = `
     <span class="brand-prompt" aria-hidden="true">&gt;_</span><span>vitor<span class="brand-accent">.dev</span></span>
 </a>`;
 
+const MENU_ONLY = ['inicio', 'contato'];
+
 const navLink = (page, active) => {
     const current = page.key === active ? ' aria-current="page"' : '';
-    return `<li><a href="${page.href}"${current}>${page.label}</a></li>`;
+    const scope = MENU_ONLY.includes(page.key) ? ' data-nav="menu-only"' : '';
+    return `<li${scope}><a href="${page.href}"${current}>${page.label}</a></li>`;
 };
 
 const header = (active) => `
@@ -39,10 +43,8 @@ const header = (active) => `
 <header class="site-header">
     <nav class="nav shell" aria-label="Navegação principal">
         ${BRAND}
-        <ul class="nav-links">
-            ${PAGES.filter((page) => page.key !== 'inicio' && page.key !== 'contato')
-                .map((page) => navLink(page, active))
-                .join('')}
+        <ul class="nav-links" id="nav-menu">
+            ${PAGES.map((page) => navLink(page, active)).join('')}
         </ul>
         <div class="nav-actions">
             <button id="theme-toggle" class="icon-btn" type="button" aria-label="Alternar tema claro e escuro">
@@ -50,6 +52,10 @@ const header = (active) => `
                 <svg class="icon icon-light" aria-hidden="true"><use href="#i-sun"></use></svg>
             </button>
             <a class="btn btn-ghost nav-cta" href="contato.html">contato()</a>
+            <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
+                <svg class="icon nav-icon-open" aria-hidden="true"><use href="#i-menu"></use></svg>
+                <svg class="icon nav-icon-close" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
         </div>
     </nav>
 </header>`;
@@ -89,6 +95,24 @@ const footer = (active) => `
                 <li><a href="https://www.instagram.com/vitorsoares.ferreira/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#i-instagram"></use></svg></a></li>
             </ul>
         </div>
+    </div>
+
+    <div class="shell">
+        <section class="gh-card" id="gh-activity" data-state="loading" aria-label="Atividade pública no GitHub">
+            <p class="gh-card-head">
+                <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+                <span>github</span>
+                <span class="gh-live" aria-hidden="true"></span>
+            </p>
+            <ul class="gh-card-metrics">
+                <li><span>eventos</span><b data-gh="total">--</b></li>
+                <li><span>repos hoje</span><b data-gh="today">--</b></li>
+                <li><span>repos no mês</span><b data-gh="month">--</b></li>
+                <li><span>dias ativos</span><b data-gh="days">--</b></li>
+            </ul>
+            <p class="gh-card-synced" data-gh="synced"></p>
+            <p class="gh-error"><a href="https://github.com/vitorsoftwaredeveloper" target="_blank" rel="noreferrer">Ver atividade no GitHub</a></p>
+        </section>
     </div>
 
     <div class="shell footer-bottom">

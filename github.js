@@ -1,27 +1,29 @@
-import { USER, loadGithubData, getCachedGithubData } from './gh-api.js';
-import { formatNumber, formatDateTime, formatTime, sameDay, sameMonth } from './format.js';
+import { loadGithubData, getCachedGithubData } from './gh-api.js';
+import { formatNumber, formatTime, sameDay, sameMonth } from './format.js';
+
+function activeDays(data) {
+    const stamps = [
+        ...(data.activity || []).map((event) => event.createdAt),
+        ...(data.repos || []).map((repo) => repo.pushedAt)
+    ].filter(Boolean);
+
+    return [...new Set(stamps.map((stamp) => stamp.slice(0, 10)))].sort().reverse();
+}
 
 function summarize(data) {
-    const pushes = data.pushes || [];
     const now = new Date();
+    const days = activeDays(data);
+    const today = now.toISOString().slice(0, 10);
+    const month = today.slice(0, 7);
 
+    const repos = data.repos || [];
     const summary = {
-        total: pushes.length,
-        month: pushes.filter((push) => sameMonth(new Date(push.createdAt), now)).length,
-        today: pushes.filter((push) => sameDay(new Date(push.createdAt), now)).length,
-        commit: null
+        pushes: (data.activity || []).length,
+        reposToday: repos.filter((repo) => repo.pushedAt && sameDay(new Date(repo.pushedAt), now)).length,
+        reposMonth: repos.filter((repo) => repo.pushedAt && sameMonth(new Date(repo.pushedAt), now)).length,
+        daysMonth: days.filter((day) => day.startsWith(month)).length,
+        activeToday: days.includes(today)
     };
-
-    const latest = pushes[0];
-    if (latest) {
-        summary.commit = {
-            message: latest.message || `${latest.commits} commit(s) enviados`,
-            repo: latest.repo,
-            url: latest.head ? `https://github.com/${latest.repo}/commit/${latest.head}` : `https://github.com/${latest.repo}`,
-            sha: latest.head ? latest.head.slice(0, 7) : '',
-            date: latest.createdAt
-        };
-    }
 
     return summary;
 }
@@ -33,21 +35,10 @@ function render(root, data) {
         if (node) node.textContent = value;
     };
 
-    set('total', formatNumber(summary.total));
-    set('month', formatNumber(summary.month));
-    set('today', formatNumber(summary.today));
-
-    const link = root.querySelector('[data-gh="commit-link"]');
-    if (summary.commit) {
-        const parts = [summary.commit.repo, summary.commit.sha, formatDateTime(summary.commit.date)].filter(Boolean);
-        set('message', summary.commit.message);
-        set('meta', parts.join(' · '));
-        if (link) link.href = summary.commit.url;
-    } else {
-        set('message', 'Nenhum push público na janela recente.');
-        set('meta', '');
-        if (link) link.href = `https://github.com/${USER}`;
-    }
+    set('total', formatNumber(summary.pushes));
+    set('month', formatNumber(summary.reposMonth));
+    set('today', formatNumber(summary.reposToday));
+    set('days', formatNumber(summary.daysMonth));
 
     const stamp = root.querySelector('[data-gh="synced"]');
     if (stamp) {

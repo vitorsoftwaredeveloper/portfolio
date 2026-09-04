@@ -1,4 +1,4 @@
-import { ENDPOINTS, normalizeEvents, normalizeProfile, normalizeRepo } from '../gh-normalize.js';
+import { ENDPOINTS, normalizeActivity, normalizeProfile, normalizeRepo } from '../gh-normalize.js';
 
 const USER = process.env.GITHUB_USER || 'vitorsoftwaredeveloper';
 const TOKEN = process.env.GITHUB_TOKEN || '';
@@ -57,17 +57,20 @@ export default async function handler(request, response) {
     }
 
     try {
-        const [profile, repos, events] = await Promise.all([
+        const [profile, rawRepos, events] = await Promise.all([
             getJson(ENDPOINTS.profile(USER)),
             getJson(ENDPOINTS.repos(USER)),
             getJson(ENDPOINTS.events(USER)).catch(() => [])
         ]);
 
+        const repos = rawRepos.map(normalizeRepo);
+        const activity = normalizeActivity(events);
         response.setHeader('Cache-Control', CACHE_OK);
         response.status(200).json({
             profile: normalizeProfile(profile),
-            repos: repos.map(normalizeRepo),
-            pushes: normalizeEvents(events),
+            repos,
+            activity,
+            pushes: activity.filter((event) => event.type === 'PushEvent'),
             fetchedAt: Date.now(),
             authenticated: Boolean(TOKEN)
         });

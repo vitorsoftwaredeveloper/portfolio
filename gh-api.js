@@ -1,8 +1,8 @@
-import { ENDPOINTS, normalizeEvents, normalizeProfile, normalizeRepo } from './gh-normalize.js';
+import { ENDPOINTS, normalizeActivity, normalizeProfile, normalizeRepo } from './gh-normalize.js';
 
 export const USER = 'vitorsoftwaredeveloper';
 
-const CACHE_KEY = 'gh-data-v2';
+const CACHE_KEY = 'gh-data-v4';
 const API = 'https://api.github.com';
 
 // Proxy opcional (ver README). Vazio: o navegador fala direto com a API publica.
@@ -43,16 +43,20 @@ function writeCache(data) {
 }
 
 async function requestFromGithub() {
-    const [profile, repos, events] = await Promise.all([
+    const [profile, rawRepos, events] = await Promise.all([
         getJson(ENDPOINTS.profile(USER)),
         getJson(ENDPOINTS.repos(USER)),
         getJson(ENDPOINTS.events(USER)).catch(() => [])
     ]);
 
+    const repos = rawRepos.map(normalizeRepo);
+    const activity = normalizeActivity(events);
+
     return {
         profile: normalizeProfile(profile),
-        repos: repos.map(normalizeRepo),
-        pushes: normalizeEvents(events),
+        repos,
+        activity,
+        pushes: activity.filter((event) => event.type === 'PushEvent'),
         fetchedAt: Date.now(),
         fromCache: false,
         source: 'github'
@@ -68,10 +72,13 @@ async function requestFromProxy() {
         throw new Error('Proxy devolveu um formato inesperado.');
     }
 
+    const activity = Array.isArray(payload.activity) ? payload.activity : [];
+
     return {
         profile: payload.profile,
         repos: payload.repos,
-        pushes: Array.isArray(payload.pushes) ? payload.pushes : [],
+        activity,
+        pushes: Array.isArray(payload.pushes) ? payload.pushes : activity.filter((event) => event.type === 'PushEvent'),
         fetchedAt: payload.fetchedAt || Date.now(),
         fromCache: false,
         source: 'proxy'
@@ -99,7 +106,12 @@ export function loadGithubData({ force = false } = {}) {
 
     pending = request()
         .then((data) => {
-            writeCache({ profile: data.profile, repos: data.repos, pushes: data.pushes });
+            writeCache({
+                profile: data.profile,
+                repos: data.repos,
+                activity: data.activity,
+                pushes: data.pushes
+            });
             return data;
         })
         .catch((error) => {

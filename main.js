@@ -34,6 +34,42 @@ function setupTheme() {
     });
 }
 
+function setupNavMenu() {
+    const toggle = document.getElementById('nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    const header = document.querySelector('.site-header');
+    if (!toggle || !menu || !header) return;
+
+    const desktop = matchMedia('(min-width: 561px)');
+
+    const setOpen = (open) => {
+        menu.dataset.open = String(open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    };
+
+    setOpen(false);
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', (event) => {
+        if (event.target.closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!header.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || toggle.getAttribute('aria-expanded') !== 'true') return;
+        setOpen(false);
+        toggle.focus();
+    });
+
+    desktop.addEventListener('change', (event) => {
+        if (event.matches) setOpen(false);
+    });
+}
+
 let revealObserver = null;
 
 function observeReveals(root = document) {
@@ -132,6 +168,19 @@ function featuredCard(project) {
         </a>`;
 }
 
+const KB_PER_MB = 1024;
+
+function repoSize(repo) {
+    if (!repo.size) return '';
+    return repo.size >= KB_PER_MB ? `${(repo.size / KB_PER_MB).toFixed(1)} MB` : `${formatNumber(repo.size)} KB`;
+}
+
+function repoTopics(repo) {
+    if (!repo.topics || !repo.topics.length) return '';
+    const chips = repo.topics.slice(0, 5).map((topic) => `<li>${escapeHtml(topic)}</li>`).join('');
+    return `<ul class="repo-topics">${chips}</ul>`;
+}
+
 function repoCard(repo) {
     const language = repo.language
         ? `<span class="repo-lang"><i style="--dot:${languageColor(repo.language)}" aria-hidden="true"></i>${escapeHtml(repo.language)}</span>`
@@ -141,6 +190,9 @@ function repoCard(repo) {
     const pushed = repo.pushedAt
         ? `<span class="repo-updated">${escapeHtml(formatRelative(repo.pushedAt))}</span>`
         : '';
+    const license = repo.license ? `<span>${escapeHtml(repo.license)}</span>` : '';
+    const size = repoSize(repo) ? `<span>${escapeHtml(repoSize(repo))}</span>` : '';
+    const issues = repo.openIssues ? `<span>${formatNumber(repo.openIssues)} issue(s)</span>` : '';
     return `
         <a class="repo-card reveal" href="${repo.url}" target="_blank" rel="noreferrer" data-category="${escapeHtml(repo.category)}">
             <div class="repo-top">
@@ -149,7 +201,8 @@ function repoCard(repo) {
             </div>
             <p>${escapeHtml(repo.description)}</p>
             ${liveBadge(repo)}
-            <div class="repo-meta">${language}${repoStats(repo)}${fork}${archived}${pushed}</div>
+            ${repoTopics(repo)}
+            <div class="repo-meta">${language}${repoStats(repo)}${license}${size}${issues}${fork}${archived}${pushed}</div>
         </a>`;
 }
 
@@ -190,6 +243,10 @@ function mergeRepos(live) {
                 stars: repo.stars,
                 forks: repo.forks,
                 topics: repo.topics,
+                license: repo.license,
+                size: repo.size,
+                openIssues: repo.openIssues,
+                createdAt: repo.createdAt,
                 pushedAt: repo.pushedAt
             };
         })
@@ -431,6 +488,7 @@ function setupFamily() {
         const button = event.target.closest('[data-photo-index]');
         if (!button) return;
         dialog.showModal();
+        dialog.focus();
         show(Number(button.dataset.photoIndex));
     });
 
@@ -465,6 +523,7 @@ async function setupGithubActivity() {
 
 mountLayout(document.body.dataset.page);
 setupTheme();
+setupNavMenu();
 setupPageData(null);
 setupFamily();
 setupTypewriter();

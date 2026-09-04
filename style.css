@@ -255,10 +255,30 @@ ul {
     color: var(--primary);
 }
 
+.nav-links [data-nav='menu-only'] {
+    display: none;
+}
+
 .nav-actions {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.nav-actions .nav-toggle {
+    display: none;
+}
+
+.nav-icon-close {
+    display: none;
+}
+
+.nav-toggle[aria-expanded='true'] .nav-icon-open {
+    display: none;
+}
+
+.nav-toggle[aria-expanded='true'] .nav-icon-close {
+    display: block;
 }
 
 .nav-cta {
@@ -1110,6 +1130,23 @@ ul {
     right: 12px;
 }
 
+
+.repo-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.repo-topics li {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    border-radius: var(--radius-tag);
+    background: var(--muted);
+    color: var(--muted-fg);
+}
+
 .contact {
     position: relative;
     overflow: hidden;
@@ -1267,109 +1304,94 @@ ul {
     height: 18px;
 }
 
-.gh-activity {
-    margin-top: 56px;
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
+.gh-card {
+    margin-top: 44px;
+    padding: 18px 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--card);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px 28px;
 }
 
-.gh-head {
+.gh-card-head {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--primary);
 }
 
-.gh-head .icon {
-    width: 16px;
-    height: 16px;
-}
-
-.gh-synced {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.08em;
-    text-transform: none;
-    color: var(--muted-fg);
+.gh-card-head .icon {
+    width: 15px;
+    height: 15px;
 }
 
 .gh-live {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 999px;
     background: var(--primary);
     opacity: 0;
     transition: opacity 0.4s;
 }
 
-.gh-activity[data-state='ready'] .gh-live {
+.gh-card[data-state='ready'] .gh-live {
     opacity: 1;
     animation: pulse 2.4s ease-in-out infinite;
 }
 
-.gh-body {
-    margin-top: 22px;
-    display: grid;
-    gap: 22px;
+.gh-card-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 32px;
 }
 
-.gh-label {
+.gh-card-metrics li {
+    min-width: 92px;
+}
+
+.gh-card-metrics span {
+    display: block;
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted-fg);
 }
 
-.gh-value {
-    margin-top: 8px;
+.gh-card-metrics b {
+    display: block;
+    margin-top: 4px;
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    line-height: 1;
+    line-height: 1.1;
+    color: var(--fg);
     font-variant-numeric: tabular-nums;
 }
 
-.gh-commit .gh-label {
-    color: var(--primary);
-}
-
-.gh-message {
-    margin-top: 8px;
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    line-height: 1.5;
-}
-
-.gh-meta {
-    margin-top: 6px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--muted-fg);
-    word-break: break-word;
-}
-
-.gh-commit:hover .gh-message {
-    color: var(--primary);
-}
-
-.gh-activity[data-state='loading'] .gh-value,
-.gh-activity[data-state='loading'] .gh-message {
+.gh-card[data-state='loading'] .gh-card-metrics b {
     color: var(--muted-fg);
     animation: shimmer 1.6s ease-in-out infinite;
 }
 
+.gh-card-synced {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--muted-fg);
+}
+
 .gh-error {
     display: none;
-    margin-top: 18px;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--muted-fg);
+    font-size: 0.72rem;
 }
 
 .gh-error a {
@@ -1377,12 +1399,13 @@ ul {
     text-decoration: underline;
 }
 
-.gh-activity[data-state='error'] .gh-body,
-.gh-activity[data-state='error'] .gh-live {
+.gh-card[data-state='error'] .gh-card-metrics,
+.gh-card[data-state='error'] .gh-card-synced,
+.gh-card[data-state='error'] .gh-live {
     display: none;
 }
 
-.gh-activity[data-state='error'] .gh-error {
+.gh-card[data-state='error'] .gh-error {
     display: block;
 }
 
@@ -1483,25 +1506,6 @@ ul {
         gap: 32px;
     }
 
-    .gh-body {
-        grid-template-columns: repeat(3, minmax(0, 0.6fr)) minmax(0, 2fr);
-        gap: 28px;
-    }
-
-    .gh-metric {
-        border-left: 1px solid var(--border);
-        padding-left: 20px;
-    }
-
-    .gh-metric:first-child {
-        border-left: 0;
-        padding-left: 0;
-    }
-
-    .gh-commit {
-        border-left: 1px solid var(--border);
-        padding-left: 24px;
-    }
 }
 
 @media (min-width: 1024px) {
@@ -1541,8 +1545,50 @@ ul {
 }
 
 @media (max-width: 560px) {
-    .nav-links {
+    .nav-actions .nav-toggle {
+        display: grid;
+    }
+
+    .nav-cta {
         display: none;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 19;
+        flex-direction: column;
+        gap: 0;
+        padding: 8px 20px calc(14px + env(safe-area-inset-bottom));
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.24s var(--ease), transform 0.24s var(--ease);
+    }
+
+    .nav-links[data-open='true'] {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+    }
+
+    .nav-links [data-nav='menu-only'] {
+        display: block;
+    }
+
+    .nav-links li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 14px 4px;
+        font-size: 1rem;
     }
 
     .family-grid {
@@ -1602,9 +1648,8 @@ ul {
     .caret,
     .status-dot,
     .repo-card.skeleton,
-    .gh-activity[data-state='ready'] .gh-live,
-    .gh-activity[data-state='loading'] .gh-value,
-    .gh-activity[data-state='loading'] .gh-message,
+    .gh-card[data-state='ready'] .gh-live,
+    .gh-card[data-state='loading'] .gh-card-metrics b,
     .holo,
     .lightbox[open] .lightbox-close,
     .lightbox[open] .lightbox-nav,
