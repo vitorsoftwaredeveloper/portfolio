@@ -2417,13 +2417,14 @@ section[id] {
         display: block;
         min-height: auto;
         padding: 0 0 52px;
+        --hero-scene-h: clamp(320px, 46svh, 430px);
     }
 
     .hero-scene {
         position: relative;
         inset: auto;
         z-index: 0;
-        height: clamp(320px, 46svh, 430px);
+        height: var(--hero-scene-h);
         background-position: 50% 44%;
     }
 
@@ -2467,26 +2468,22 @@ section[id] {
         background-image: linear-gradient(135deg, var(--neon-a), var(--neon-b));
     }
 
-    .hero-scroll,
-    .hero-hint {
+    .hero-scroll {
         position: static;
         translate: none;
         width: fit-content;
-        margin-inline: auto;
+        margin: 30px auto 0;
         opacity: 1;
         animation: none;
-    }
-
-    .hero-scroll {
-        margin-top: 30px;
         color: var(--muted-fg);
     }
 
     .hero-hint {
-        margin-top: 20px;
-        border-color: color-mix(in oklab, var(--primary) 45%, transparent);
-        background: color-mix(in oklab, var(--card-solid) 90%, transparent);
-        color: var(--fg);
+        top: calc(var(--hero-scene-h) - 56px);
+        right: 14px;
+        bottom: auto;
+        opacity: 1;
+        animation: none;
     }
 
     .hero-hint-pulse {
