@@ -387,7 +387,7 @@ section[id] {
     width: 100%;
     height: 132%;
     object-fit: cover;
-    transform: translate3d(0, calc(var(--hero-progress, 0) * 12%), 0) scale(calc(1 + var(--hero-progress, 0) * 0.08));
+    transform: translate3d(0, calc(var(--hero-progress, 0) * 12%), 0) scale(calc(1 + var(--hero-progress, 0) * 0.06));
     object-position: 50% 52%;
     pointer-events: none;
     will-change: transform;
@@ -1561,8 +1561,6 @@ section[id] {
 .family-item {
     position: relative;
     display: block;
-    transform: translate3d(0, var(--parallax-shift, 0px), 0);
-    transition: transform 0.15s linear;
     padding: 0;
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
@@ -2339,7 +2337,6 @@ section[id] {
     .hero-inner,
     .hero-scene-media,
     .hero-leaves,
-    .family-item,
     .hero-hint,
     .hero-hint-pulse,
     .hero-scene-media,
@@ -2416,6 +2413,86 @@ section[id] {
         background-position: 58% 46%;
     }
 
+    .hero {
+        display: block;
+        min-height: auto;
+        padding: 0 0 52px;
+    }
+
+    .hero-scene {
+        position: relative;
+        inset: auto;
+        z-index: 0;
+        height: clamp(320px, 46svh, 430px);
+        background-position: 50% 44%;
+    }
+
+    .hero-scene-media {
+        top: 0;
+        height: 100%;
+        object-position: 50% 44%;
+        transform: none;
+        animation: none;
+    }
+
+    .hero-scene-veil {
+        background: linear-gradient(to bottom, oklch(16% 0.03 240 / 0.42) 0%, oklch(16% 0.03 240 / 0.05) 34%, oklch(16% 0.03 240 / 0.18) 68%, var(--bg) 100%);
+    }
+
+    .hero-leaves {
+        transform: none;
+    }
+
+    .hero-inner {
+        margin-top: 24px;
+        transform: none;
+        opacity: 1;
+        text-shadow: none;
+    }
+
+    .hero-inner h1 {
+        color: var(--fg);
+    }
+
+    .hero .hero-lead {
+        color: var(--muted-fg);
+    }
+
+    .hero .hero-role,
+    .hero-kicker {
+        color: var(--primary);
+    }
+
+    .hero .neon {
+        background-image: linear-gradient(135deg, var(--neon-a), var(--neon-b));
+    }
+
+    .hero-scroll,
+    .hero-hint {
+        position: static;
+        translate: none;
+        width: fit-content;
+        margin-inline: auto;
+        opacity: 1;
+        animation: none;
+    }
+
+    .hero-scroll {
+        margin-top: 30px;
+        color: var(--muted-fg);
+    }
+
+    .hero-hint {
+        margin-top: 20px;
+        border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+        background: color-mix(in oklab, var(--card-solid) 90%, transparent);
+        color: var(--fg);
+    }
+
+    .hero-hint-pulse {
+        animation: none;
+    }
+
     .hero-scene-veil {
         background:
             linear-gradient(to bottom, oklch(16% 0.03 240 / 0.5) 0%, oklch(16% 0.03 240 / 0.16) 44%, oklch(16% 0.03 240 / 0.46) 74%, var(--bg) 100%);
@@ -2426,26 +2503,3 @@ section[id] {
     }
 }
 
-.reveal:not(.is-visible)[data-parallax] {
-    transform: translateY(24px);
-}
-
-[data-parallax],
-.reveal.is-visible[data-parallax] {
-    transform: translate3d(0, var(--parallax-shift, 0px), 0);
-    transition: transform 0.12s linear;
-}
-
-img[data-parallax],
-.reveal.is-visible img[data-parallax] {
-    transform: translate3d(0, var(--parallax-shift, 0px), 0) scale(1.08);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    [data-parallax],
-    .reveal.is-visible[data-parallax],
-    img[data-parallax],
-    .reveal.is-visible img[data-parallax] {
-        transform: none;
-    }
-}

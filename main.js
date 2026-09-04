@@ -800,53 +800,17 @@ function setupScrollEntry() {
     });
 }
 
-const PARALLAX_LAYERS = [
-    { selector: '.family-item', speed: 0.05, alternate: true },
-    { selector: '.timeline-card', speed: 0.045 },
-    { selector: '.product-parts', speed: 0.075 },
-    { selector: '.front-shot', speed: 0.04 },
-    { selector: '.gh-card', speed: 0.05 },
-    { selector: '.about-side .card', speed: 0.06 },
-    { selector: '.section-head', speed: 0.03, max: 26 },
-    { selector: '.skill-grid .card', speed: 0.05, alternate: true },
-    { selector: '.channel', speed: 0.04, alternate: true },
-    { selector: '.bento-card', speed: 0.045, alternate: true }
-];
-
 function setupParallax() {
     if (prefersReducedMotion.matches) return;
 
     const hero = document.querySelector('.hero');
-    const main = document.getElementById('conteudo');
-    let layers = [];
-
-    const collect = () => {
-        layers = [];
-        PARALLAX_LAYERS.forEach((layer) => {
-            document.querySelectorAll(layer.selector).forEach((el, index) => {
-                el.dataset.parallax = '';
-                const factor = layer.alternate && index % 2 ? 1.7 : 1;
-                layers.push({ el, speed: layer.speed * factor, max: layer.max || 46 });
-            });
-        });
-    };
+    if (!hero) return;
 
     const apply = () => {
         const viewport = innerHeight || document.documentElement.clientHeight;
-
-        if (hero) {
-            const height = hero.offsetHeight || viewport;
-            const progress = Math.min(Math.max(scrollY / (height * 0.9), 0), 1);
-            hero.style.setProperty('--hero-progress', progress.toFixed(4));
-        }
-
-        layers.forEach(({ el, speed, max }) => {
-            const rect = el.getBoundingClientRect();
-            if (rect.bottom < -240 || rect.top > viewport + 240) return;
-            const distance = rect.top + rect.height / 2 - viewport / 2;
-            const shift = Math.min(Math.max(-distance * speed, -max), max);
-            el.style.setProperty('--parallax-shift', `${shift.toFixed(1)}px`);
-        });
+        const height = hero.offsetHeight || viewport;
+        const progress = Math.min(Math.max(scrollY / (height * 0.9), 0), 1);
+        hero.style.setProperty('--hero-progress', progress.toFixed(4));
     };
 
     let last = 0;
@@ -857,20 +821,7 @@ function setupParallax() {
         apply();
     };
 
-    collect();
     apply();
-
-    if (main && 'MutationObserver' in window) {
-        let pending = 0;
-        new MutationObserver(() => {
-            clearTimeout(pending);
-            pending = setTimeout(() => {
-                collect();
-                apply();
-            }, 200);
-        }).observe(main, { childList: true, subtree: true });
-    }
-
     addEventListener('scroll', request, { passive: true });
     addEventListener('resize', request, { passive: true });
 }
