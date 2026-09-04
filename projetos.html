@@ -54,6 +54,22 @@
 
             <div class="bento" id="featured-grid"></div>
 
+            <section class="gh-card" id="gh-activity" data-state="loading" aria-label="Atividade pública no GitHub">
+                <p class="gh-card-head">
+                    <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+                    <span>github</span>
+                    <span class="gh-live" aria-hidden="true"></span>
+                </p>
+                <ul class="gh-card-metrics">
+                    <li><span>eventos</span><b data-gh="total">--</b></li>
+                    <li><span>repos hoje</span><b data-gh="today">--</b></li>
+                    <li><span>repos no mês</span><b data-gh="month">--</b></li>
+                    <li><span>dias ativos</span><b data-gh="days">--</b></li>
+                </ul>
+                <p class="gh-card-synced" data-gh="synced"></p>
+                <p class="gh-error"><a href="https://github.com/vitorsoftwaredeveloper" target="_blank" rel="noreferrer">Ver atividade no GitHub</a></p>
+            </section>
+
             <div class="reveal repos-head">
                 <h3>Todos os repositórios</h3>
                 <p>Lista carregada direto da API pública do GitHub a cada visita, ordenada pelo push mais recente.</p>

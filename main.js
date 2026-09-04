@@ -536,8 +536,8 @@ async function hydrate(loader) {
     if (link) link.href = `https://github.com/${USER}`;
 }
 
-function familyCard(photo, index, href) {
-    const span = photo.span ? ` family-item--${photo.span}` : '';
+function familyCard(photo, index, href, uniform) {
+    const span = photo.span && !uniform ? ` family-item--${photo.span}` : '';
     const size = photo.width && photo.height ? ` width="${photo.width}" height="${photo.height}"` : '';
     const raw = photo.raw ? ` data-raw="${escapeHtml(photo.raw)}"` : '';
     const tag = href
@@ -604,7 +604,7 @@ function setupFamily() {
         const year = activeYear();
         visible = year === 'todos' ? photos : photos.filter((photo) => yearOf(photo) === year);
         const list = limit ? visible.slice(0, limit) : visible;
-        grid.innerHTML = list.map((photo, index) => familyCard(photo, index, href)).join('');
+        grid.innerHTML = list.map((photo, index) => familyCard(photo, index, href, grid.dataset.uniform === 'true')).join('');
         observeReveals(grid);
     };
 
@@ -800,6 +800,81 @@ function setupScrollEntry() {
     });
 }
 
+const PARALLAX_LAYERS = [
+    { selector: '.family-item', speed: 0.05, alternate: true },
+    { selector: '.timeline-card', speed: 0.045 },
+    { selector: '.product-parts', speed: 0.075 },
+    { selector: '.front-shot', speed: 0.04 },
+    { selector: '.gh-card', speed: 0.05 },
+    { selector: '.about-side .card', speed: 0.06 },
+    { selector: '.section-head', speed: 0.03, max: 26 },
+    { selector: '.skill-grid .card', speed: 0.05, alternate: true },
+    { selector: '.channel', speed: 0.04, alternate: true },
+    { selector: '.bento-card', speed: 0.045, alternate: true }
+];
+
+function setupParallax() {
+    if (prefersReducedMotion.matches) return;
+
+    const hero = document.querySelector('.hero');
+    const main = document.getElementById('conteudo');
+    let layers = [];
+
+    const collect = () => {
+        layers = [];
+        PARALLAX_LAYERS.forEach((layer) => {
+            document.querySelectorAll(layer.selector).forEach((el, index) => {
+                el.dataset.parallax = '';
+                const factor = layer.alternate && index % 2 ? 1.7 : 1;
+                layers.push({ el, speed: layer.speed * factor, max: layer.max || 46 });
+            });
+        });
+    };
+
+    const apply = () => {
+        const viewport = innerHeight || document.documentElement.clientHeight;
+
+        if (hero) {
+            const height = hero.offsetHeight || viewport;
+            const progress = Math.min(Math.max(scrollY / (height * 0.9), 0), 1);
+            hero.style.setProperty('--hero-progress', progress.toFixed(4));
+        }
+
+        layers.forEach(({ el, speed, max }) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.bottom < -240 || rect.top > viewport + 240) return;
+            const distance = rect.top + rect.height / 2 - viewport / 2;
+            const shift = Math.min(Math.max(-distance * speed, -max), max);
+            el.style.setProperty('--parallax-shift', `${shift.toFixed(1)}px`);
+        });
+    };
+
+    let last = 0;
+    const request = () => {
+        const now = performance.now();
+        if (now - last < 8) return;
+        last = now;
+        apply();
+    };
+
+    collect();
+    apply();
+
+    if (main && 'MutationObserver' in window) {
+        let pending = 0;
+        new MutationObserver(() => {
+            clearTimeout(pending);
+            pending = setTimeout(() => {
+                collect();
+                apply();
+            }, 200);
+        }).observe(main, { childList: true, subtree: true });
+    }
+
+    addEventListener('scroll', request, { passive: true });
+    addEventListener('resize', request, { passive: true });
+}
+
 function setupHeaderScroll() {
     const header = document.querySelector('.site-header');
     if (!header) return;
@@ -826,17 +901,39 @@ function setupHeroTheme() {
     const audio = document.getElementById('hero-theme');
     if (!hero || !audio) return;
 
-    const MAX_VOLUME = 0.22;
+    const MAX_VOLUME = 0.15;
     let target = 0;
     let ticking = 0;
     let broken = false;
 
     audio.volume = 0;
 
+    const hint = document.getElementById('hero-hint');
+
+    let hintTimer = 0;
+
+    const hideHint = () => {
+        if (!hint || hint.hidden) return;
+        hint.dataset.leaving = 'true';
+        hintTimer = setTimeout(() => {
+            hint.hidden = true;
+        }, 400);
+    };
+
+    const showHint = () => {
+        if (!hint || broken) return;
+        if (!audio.muted && !audio.paused) return;
+        clearTimeout(hintTimer);
+        delete hint.dataset.leaving;
+        hint.hidden = false;
+    };
+
     const play = () => {
         if (broken) return;
         const attempt = audio.play();
-        if (attempt) attempt.catch(() => {});
+        if (attempt) attempt.catch(() => {
+            if (!audio.muted) showHint();
+        });
     };
 
     const tryLoud = () => {
@@ -853,6 +950,7 @@ function setupHeroTheme() {
     const unmute = () => {
         audio.muted = false;
         if (target > 0) play();
+        hideHint();
     };
 
     const fade = () => {
@@ -898,8 +996,11 @@ function setupHeroTheme() {
         addEventListener(event, unmute, { passive: true, capture: true });
     });
 
+    if (hint) hint.addEventListener('click', unmute);
+
     update();
     tryLoud();
+    setTimeout(showHint, 1400);
 }
 
 function setupHeroScene() {
@@ -962,6 +1063,7 @@ setupTheme();
 setupNavMenu();
 setupPageData(null);
 setupFamily();
+setupParallax();
 setupTypewriter();
 setupHeroScene();
 setupHeroTheme();

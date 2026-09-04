@@ -22,6 +22,7 @@ const SPRITE = `
     <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6l-6 6"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></symbol>
     <symbol id="i-fork" viewBox="0 0 24 24"><path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M7 8v8"/><path d="M17 8v1a3 3 0 0 1 -3 3h-4a3 3 0 0 0 -3 3v1"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M6 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M16 15m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M9 17v-13h10v11"/><path d="M9 8h10"/></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></symbol>
     <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6l6 -6"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></symbol>
@@ -78,16 +79,6 @@ const footer = (active) => `
         </nav>
 
         <div class="footer-col">
-            <p class="footer-title">Repositórios</p>
-            <ul>
-                <li><a href="https://github.com/vitorsoftwaredeveloper/resgatar_community" target="_blank" rel="noreferrer">resgatar_community <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a></li>
-                <li><a href="https://github.com/vitorsoftwaredeveloper/resgatar_app" target="_blank" rel="noreferrer">resgatar_app <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a></li>
-                <li><a href="https://github.com/vitorsoftwaredeveloper/resgatar-browser" target="_blank" rel="noreferrer">resgatar-browser <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a></li>
-                <li><a href="https://github.com/vitorsoftwaredeveloper/API_community_center" target="_blank" rel="noreferrer">API_community_center <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a></li>
-            </ul>
-        </div>
-
-        <div class="footer-col">
             <p class="footer-title">Canais</p>
             <ul class="footer-socials">
                 <li><a href="https://wa.me/5583999523137" target="_blank" rel="noreferrer" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg></a></li>
@@ -99,27 +90,8 @@ const footer = (active) => `
         </div>
     </div>
 
-    <div class="shell">
-        <section class="gh-card" id="gh-activity" data-state="loading" aria-label="Atividade pública no GitHub">
-            <p class="gh-card-head">
-                <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
-                <span>github</span>
-                <span class="gh-live" aria-hidden="true"></span>
-            </p>
-            <ul class="gh-card-metrics">
-                <li><span>eventos</span><b data-gh="total">--</b></li>
-                <li><span>repos hoje</span><b data-gh="today">--</b></li>
-                <li><span>repos no mês</span><b data-gh="month">--</b></li>
-                <li><span>dias ativos</span><b data-gh="days">--</b></li>
-            </ul>
-            <p class="gh-card-synced" data-gh="synced"></p>
-            <p class="gh-error"><a href="https://github.com/vitorsoftwaredeveloper" target="_blank" rel="noreferrer">Ver atividade no GitHub</a></p>
-        </section>
-    </div>
-
     <div class="shell footer-bottom">
         <p>2026 Vitor Soares</p>
-        <p>Construído com HTML, CSS e JavaScript</p>
     </div>
 </footer>`;
 

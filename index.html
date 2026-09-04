@@ -51,6 +51,11 @@
                 </dl>
             </div>
             <audio id="hero-theme" src="media/hero-theme.mp3" loop muted autoplay preload="auto"></audio>
+            <button class="hero-hint" id="hero-hint" type="button" hidden>
+                <span class="hero-hint-pulse" aria-hidden="true"></span>
+                <svg class="icon" aria-hidden="true"><use href="#i-music"></use></svg>
+                <span>ouvir</span>
+            </button>
             <a class="hero-scroll" href="#quem-eu-sou" aria-label="Ir para o conteúdo">
                 <span>scroll</span>
                 <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
@@ -100,7 +105,7 @@
                 <h2>Fora do editor, <span class="neon">eles</span></h2>
                 <p class="section-lead">A parte da vida que não cabe em commit.</p>
             </div>
-            <div class="family-grid" id="family-grid" data-limit="6" data-href="familia.html"></div>
+            <div class="family-grid" id="family-grid" data-uniform="true" data-limit="4" data-href="familia.html"></div>
             <p class="page-cta reveal">
                 <a class="btn btn-ghost" href="familia.html">Ver todas as fotos</a>
             </p>
